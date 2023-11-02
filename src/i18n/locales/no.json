@@ -288,8 +288,7 @@
     "english": "English",
     "spanish": "Spanish",
     "simplified_chinese": "Simplified Chinese",
-    "persian": "Persian",
-    "norwegian": "Norwegian"
+    "persian": "Persian"
   },
   "menu": {
     "auth": "Auth",
@@ -341,9 +340,9 @@
     "faq": "Faq"
   },
   "messages": {
-    "all": "See all messages",
-    "new": "New messages from {name}",
-    "mark_as_read": "Mark As Read"
+    "all": "Se alle meldinger",
+    "new": "Nye meldinger fra {name}",
+    "mark_as_read": "Merk som lest"
   },
   "modal": {
     "cancel": "Cancel",
@@ -498,8 +497,8 @@
   },
   "user": {
     "language": "Change Language",
-    "logout": "Logout",
-    "profile": "My Profile"
+    "logout": "logg ut",
+    "profile": "Min Profil"
   },
   "treeView": {
     "basic": "Basic",

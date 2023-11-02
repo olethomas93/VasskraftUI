@@ -2,6 +2,18 @@
   <router-view />
 </template>
 
+<script setup lang="ts">
+  import { onMounted } from 'vue'
+
+  import { authStore } from './stores/authStore'
+
+  const store = authStore()
+
+  onMounted(() => {
+    store.init()
+  })
+</script>
+
 <style lang="scss">
   @import 'scss/main.scss';
 

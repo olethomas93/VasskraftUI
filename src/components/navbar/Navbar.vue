@@ -8,28 +8,13 @@
           :color="colors.primary"
           @click="isSidebarMinimized = !isSidebarMinimized"
         />
-        <router-link to="/">
-          <vuestic-logo class="logo" />
-        </router-link>
       </div>
     </template>
     <div class="app-navbar-center">
-      <span class="hidden md:block mr-2">{{ t('navbar.messageUs') }}</span>
-      <a class="hidden md:block mr-2" href="mailto:hello@epicmax.co" target="_blank" :style="{ color: colors.primary }">
-        hello@epicmax.co
-      </a>
-      <va-button
-        href="https://github.com/epicmaxco/vuestic-admin"
-        color="#000000"
-        class="hidden lg:block"
-        icon="github"
-        target="_blank"
-      >
-        {{ t('navbar.repository') }}
-      </va-button>
+      <h2 class="va-h2">LARSKRAFT</h2>
     </div>
     <template #right>
-      <app-navbar-actions class="app-navbar__actions" :user-name="userName" />
+      <app-navbar-actions class="app-navbar__actions" :user-name="user.email" />
     </template>
   </va-navbar>
 </template>
@@ -38,17 +23,18 @@
   import { computed } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
+  import { authStore } from '../../stores/authStore'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
   import VuesticLogo from '../VuesticLogo.vue'
   import VaIconMenuCollapsed from '../icons/VaIconMenuCollapsed.vue'
   import AppNavbarActions from './components/AppNavbarActions.vue'
-
+  const getAuthStore = authStore()
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
-  const { isSidebarMinimized, userName } = storeToRefs(GlobalStore)
-
+  const { isSidebarMinimized } = storeToRefs(GlobalStore)
+  const { user } = storeToRefs(getAuthStore)
   const { getColors } = useColors()
   const colors = computed(() => getColors())
 </script>

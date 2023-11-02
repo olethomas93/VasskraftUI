@@ -2,7 +2,7 @@
   <div class="auth-layout grid grid-cols-12 content-center">
     <div class="flex col-span-12 p-4 justify-center">
       <router-link class="py-5 justify-center flex" to="/">
-        <vuestic-logo height="32" />
+        <h1>LARSKRAFT</h1>
       </router-link>
     </div>
 
@@ -12,7 +12,6 @@
           <va-tabs v-model="tabIndex" center>
             <template #tabs>
               <va-tab name="login">{{ t('auth.login') }}</va-tab>
-              <va-tab name="signup">{{ t('auth.createNewAccount') }}</va-tab>
             </template>
           </va-tabs>
 
@@ -28,12 +27,10 @@
 </template>
 
 <script>
-  import VuesticLogo from '../components/VuesticLogo.vue'
   import { useI18n } from 'vue-i18n'
 
   export default {
     name: 'AuthLayout',
-    components: { VuesticLogo },
     setup() {
       const { t } = useI18n()
       return { t }

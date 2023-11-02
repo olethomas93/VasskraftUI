@@ -26,25 +26,38 @@
     </div>
 
     <div class="flex justify-center mt-4">
-      <va-button class="my-0" @click="onsubmit">{{ t('auth.login') }}</va-button>
+      <va-button class="my-0" @click="signinRedirect">{{ t('auth.login') }}</va-button>
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { authStore } from '../../../stores/authStore'
+  import { getRedirectResult, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+  import { useCurrentUser, useFirebaseAuth } from 'vuefire'
   const { t } = useI18n()
 
+  const auth = useFirebaseAuth()
   const email = ref('')
   const password = ref('')
   const keepLoggedIn = ref(false)
   const emailErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
   const router = useRouter()
+  const useAuthStore = authStore()
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
+  const error = ref(null)
+  function signinRedirect() {
+    emailErrors.value = email.value ? [] : ['Email is required']
+    passwordErrors.value = password.value ? [] : ['Password is required']
+    if (!formReady.value) return
+
+    useAuthStore.login(email.value, password.value)
+  }
 
   function onsubmit() {
     if (!formReady.value) return
@@ -54,4 +67,11 @@
 
     router.push({ name: 'dashboard' })
   }
+
+  onMounted(() => {
+    getRedirectResult(auth!).catch((reason) => {
+      console.error('Failed redirect result', reason)
+      error.value = reason
+    })
+  })
 </script>

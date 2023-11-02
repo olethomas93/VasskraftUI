@@ -8,10 +8,13 @@
         </span>
       </template>
       <va-dropdown-content class="profile-dropdown__content">
-        <va-list-item v-for="option in options" :key="option.name" class="p-2">
-          <router-link :to="{ name: option.redirectTo }" class="profile-dropdown__item">
-            {{ t(`user.${option.name}`) }}
+        <va-list-item class="p-2">
+          <router-link to="editProfile" class="profile-dropdown__item">
+            {{ t(`user.profile`) }}
           </router-link>
+        </va-list-item>
+        <va-list-item class="p-2" @click="signout">
+          <div>logout</div>
         </va-list-item>
       </va-dropdown-content>
     </va-dropdown>
@@ -22,9 +25,14 @@
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
-
+  import { authStore } from '../../../../stores/authStore'
   const { t } = useI18n()
   const { colors } = useColors()
+  const store = authStore()
+
+  function signout() {
+    store.logout()
+  }
 
   withDefaults(
     defineProps<{
@@ -38,7 +46,7 @@
         },
         {
           name: 'logout',
-          redirectTo: 'login',
+          redirectTo: 'logout',
         },
       ],
     },

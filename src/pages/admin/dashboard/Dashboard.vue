@@ -10,9 +10,6 @@
   import { ref } from 'vue'
 
   import DashboardCharts from './DashboardCharts.vue'
-  import DashboardInfoBlock from './DashboardInfoBlock.vue'
-  import DashboardTabs from './DashboardTabs.vue'
-  import DashboardMap from './DashboardMap.vue'
 
   const dashboardMap = ref()
 

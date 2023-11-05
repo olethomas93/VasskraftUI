@@ -115,7 +115,7 @@
       console.log(data[obj].time)
 
       retData.push({ x: temp.toUTCString(), y: data[obj].sensor })
-      voltData.push({ x: temp.toUTCString(), y: data[obj].voltage })
+      voltData.push({ x: temp.toUTCString(), y: data[obj].voltage + 0.5 })
     }
     vasskraft.value = retData
     voltage.value = voltData
@@ -183,6 +183,8 @@
       title: {
         text: 'mVs',
       },
+      min: 0,
+      max: 5,
     },
     xaxis: {
       type: 'datetime',
@@ -200,6 +202,32 @@
         },
       },
     },
+    responsive: [
+      {
+        breakpoint: 1000,
+        options: {
+          chart: {
+            height: 300,
+          },
+          plotOptions: {},
+          legend: {
+            position: 'bottom',
+          },
+          yaxis: {
+            labels: {
+              formatter: function (val) {
+                return val.toFixed(2)
+              },
+            },
+            title: {
+              show: false,
+            },
+            min: 0,
+            max: 5,
+          },
+        },
+      },
+    ],
   }
   const voltConfig = {
     chart: {
@@ -243,6 +271,8 @@
       title: {
         text: 'V',
       },
+      min: 0,
+      max: 15,
     },
     xaxis: {
       type: 'datetime',
@@ -260,11 +290,37 @@
         },
       },
     },
+    responsive: [
+      {
+        breakpoint: 1000,
+        options: {
+          chart: {
+            height: 300,
+          },
+          plotOptions: {},
+          legend: {
+            position: 'bottom',
+          },
+          yaxis: {
+            labels: {
+              formatter: function (val) {
+                return val.toFixed(2)
+              },
+            },
+            title: {
+              show: false,
+            },
+            min: 0,
+            max: 15,
+          },
+        },
+      },
+    ],
   }
 </script>
 
 <style scoped>
-  .chart {
+  /* .chart {
     height: 400px;
-  }
+  } */
 </style>

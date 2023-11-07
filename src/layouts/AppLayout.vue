@@ -8,7 +8,7 @@
         </div>
         <sidebar
           :width="sidebarWidth"
-          :minimized="isSidebarMinimized"
+          :minimized="true"
           :minimized-width="sidebarMinimizedWidth"
           :animated="!isMobile"
         />

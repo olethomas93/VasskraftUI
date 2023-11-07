@@ -1,15 +1,16 @@
 <template>
-  <va-card>
-    <va-card-title>
-      {{ t('dashboard.currentVisitors') }}
-    </va-card-title>
-    <line-map v-model="mainCity" :map-data="cities" :home-city="homeCity" class="dashboard-map" />
-  </va-card>
+  <div class="grid grid-cols-12 gap-6">
+    <va-card class="col-span-12 lg:col-span-12">
+      <va-card-title> Kart </va-card-title>
+      <leaflet-maps-page></leaflet-maps-page>
+    </va-card>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import LeafletMapsPage from '../maps/leaflet-maps/LeafletMapsPage.vue'
 
   import LineMap from '../../../components/maps/LineMap.vue'
   import { lineMapData, compareStrings } from '../../../data/maps/lineMapData'

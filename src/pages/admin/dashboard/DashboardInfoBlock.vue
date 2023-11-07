@@ -2,79 +2,74 @@
   <div class="pt-6 grid grid-cols-12 gap-6">
     <div class="col-span-12 lg:col-span-6 flex flex-wrap">
       <div class="w-full pb-6 grid grid-cols-12 gap-6">
-        <va-card v-for="(info, idx) in infoTiles" :key="idx" class="col-span-12 sm:col-span-4 mb-8" :color="info.color">
+        <va-card class="col-span-12 sm:col-span-4 mb-8" color="success">
           <va-card-content>
-            <h2 class="va-h2 m-0 text-white">{{ info.value }}</h2>
-            <p class="text-white">{{ t('dashboard.info.' + info.text) }}</p>
+            <h2 v-if="lastValues" class="va-h2 m-0 text-white">{{ lastValues.sensor.toFixed(2) }}</h2>
+            <p class="text-white">Målt dybde</p>
+          </va-card-content>
+        </va-card>
+        <va-card class="col-span-12 sm:col-span-4 mb-4" color="success">
+          <va-card-content>
+            <h2 v-if="lastValues" class="va-h2 m-0 text-white">{{ lastValues.voltage.toFixed(2) }}</h2>
+            <p class="text-white">Spenning</p>
+          </va-card-content>
+        </va-card>
+        <va-card class="col-span-12 sm:col-span-4 mb-8" color="success">
+          <va-card-content>
+            <h2 v-if="lastValues" class="va-h2 m-0 text-white">{{ lastValues.time }}</h2>
+            <p class="text-white">Siste timestamp</p>
           </va-card-content>
         </va-card>
       </div>
 
-      <div class="w-full grid grid-cols-12 gap-6">
-        <va-card class="col-span-12 sm:col-span-6">
-          <va-card-content class="h-full flex flex-col justify-center">
-            <h2 class="va-h2 m-0" :style="{ color: colors.primary }">291</h2>
-            <p class="no-wrap">{{ t('dashboard.info.completedPullRequests') }}</p>
-          </va-card-content>
-        </va-card>
-        <va-card class="col-span-12 sm:col-span-6">
-          <va-card-content class="grid grid-cols-12 row-separated">
-            <div class="col-span-4 p-4 flex flex-col">
-              <h2 class="va-h2 m-0 va-text-center" :style="{ color: colors.primary }">3</h2>
-              <p class="va-text-center">{{ t('dashboard.info.users') }}</p>
-            </div>
-            <div class="col-span-4 p-4 flex flex-col">
-              <h2 class="va-h2 m-0 va-text-center" :style="{ color: colors.info }">24</h2>
-              <p class="va-text-center no-wrap">{{ t('dashboard.info.points') }}</p>
-            </div>
-            <div class="col-span-4 p-4 flex flex-col">
-              <h2 class="va-h2 m-0 va-text-center" :style="{ color: colors.warning }">91</h2>
-              <p class="va-text-center">{{ t('dashboard.info.units') }}</p>
-            </div>
-          </va-card-content>
-        </va-card>
+      <div class="w-full grid grid-cols-12 gap-1">
+        <div style="width: 100%; height: 200px"></div>
       </div>
     </div>
 
-    <div class="flex col-span-12 sm:col-span-6 lg:col-span-3">
-      <va-card stripe stripe-color="info">
-        <va-card-title>
-          {{ t('dashboard.info.componentRichTheme') }}
-        </va-card-title>
+    <div class="col-span-12 lg:col-span-6 flex flex-wrap">
+      <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12">
+        <va-card-title> </va-card-title>
         <va-card-content>
-          <p class="rich-theme-card-text">
-            Buying the right telescope to take your love of astronomy to the next level is a big next step.
-          </p>
-
-          <div class="mt-4">
-            <va-button color="primary" target="_blank" href="https://github.com/epicmaxco/vuestic-ui">
-              {{ t('dashboard.info.viewLibrary') }}
-            </va-button>
-          </div>
+          <iframe
+            style="height: 360px"
+            width="100%"
+            height="100vh"
+            src="https://www.yr.no/nb/innhold/1-107561/card.html"
+            frameborder="0"
+          ></iframe>
         </va-card-content>
       </va-card>
     </div>
-
-    <va-card class="col-span-12 sm:col-span-6 lg:col-span-3">
-      <va-image :src="images[currentImageIndex]" style="height: 200px" />
-      <va-card-title>
-        <va-button preset="plain" icon-right="fa-arrow-circle-right" @click="showModal">
-          {{ t('dashboard.info.exploreGallery') }}
-        </va-button>
-      </va-card-title>
-    </va-card>
-
-    <va-modal v-model="modal">
-      <va-carousel v-model="currentImageIndex" :items="images" class="gallery-carousel" />
-    </va-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { getDatabase, onValue, ref as storageRef, get, child } from 'firebase/database'
   import { VaCarousel, VaModal, VaCard, VaCardContent, VaCardTitle, VaButton, VaImage, useColors } from 'vuestic-ui'
 
+  const props = defineProps<{
+    data: any
+  }>()
+  const lastValues = ref()
+  watch(
+    () => props.data,
+    () => {
+      parseDate(props.data)
+    },
+  )
+
+  function parseDate(data: any) {
+    let keys = Object.keys(data)
+    let temp = keys.pop()
+    console.log(temp)
+    lastValues.value = data[temp]
+
+    console.log('DATA')
+    console.log(lastValues.value)
+  }
   const { t } = useI18n()
   const { colors } = useColors()
 

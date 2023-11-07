@@ -1,39 +1,5 @@
 <template>
   <div class="grid grid-cols-12 gap-6">
-    <!-- <va-card v-if="lineChartDataGenerated" class="col-span-12 lg:col-span-6">
-      <va-card-title>
-        <h1>{{ t('dashboard.charts.trendyTrends') }}</h1>
-        <div>
-          <va-button
-            class="m-1"
-            size="small"
-            color="danger"
-            :disabled="datasetIndex === minIndex"
-            @click="setDatasetIndex(datasetIndex - 1)"
-          >
-            {{ t('dashboard.charts.showInLessDetail') }}
-          </va-button>
-          <va-button
-            class="m-1"
-            size="small"
-            color="danger"
-            :disabled="datasetIndex === maxIndex - 1"
-            @click="setDatasetIndex(datasetIndex + 1)"
-          >
-            {{ t('dashboard.charts.showInMoreDetail') }}
-          </va-button>
-        </div>
-      </va-card-title>
-      <va-card-content>
-        <va-chart
-          class="chart"
-          :options="{ scales: { xAxes: [{ type: 'time' }] } }"
-          :data="{ datasets: [{ data: vasskraft }] }"
-          type="line"
-        />
-      </va-card-content>
-    </va-card> -->
-
     <va-card class="col-span-12 lg:col-span-6">
       <va-card-content>
         <apex-chart
@@ -67,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   import { useFirestore } from 'vuefire'
   import { getDatabase, onValue, ref as storageRef, get, child } from 'firebase/database'
   import { useI18n } from 'vue-i18n'
@@ -80,20 +46,30 @@
 
   const { t } = useI18n()
 
+  const props = defineProps<{
+    data: any
+  }>()
   const doughnutChart = ref()
   const dbRef = storageRef(getDatabase())
-  get(child(dbRef, `data`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        parseDate(snapshot.val())
-        console.log(vasskraft.value)
-      } else {
-        console.log('No data available')
-      }
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  // get(child(dbRef, `data`))
+  //   .then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       parseDate(snapshot.val())
+  //     } else {
+  //       console.log('No data available')
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error(error)
+  //   })
+
+  watch(
+    () => props.data,
+    () => {
+      parseDate(props.data)
+    },
+  )
+
   const dataGenerated = useChartData(lineChartData, 0.7)
   const doughnutChartDataGenerated = useChartData(doughnutChartData)
   const vasskraft = ref()
@@ -112,10 +88,8 @@
     for (let obj in data) {
       let temp = new Date(data[obj].time * 1000)
 
-      console.log(data[obj].time)
-
       retData.push({ x: temp.toUTCString(), y: data[obj].sensor })
-      voltData.push({ x: temp.toUTCString(), y: data[obj].voltage + 0.5 })
+      voltData.push({ x: temp.toUTCString(), y: data[obj].voltage })
     }
     vasskraft.value = retData
     voltage.value = voltData
@@ -158,7 +132,7 @@
       enabled: false,
     },
     markers: {
-      size: 5,
+      size: 3,
     },
     title: {
       text: 'Vassføring',
@@ -184,7 +158,7 @@
         text: 'mVs',
       },
       min: 0,
-      max: 5,
+      max: 2,
     },
     xaxis: {
       type: 'datetime',
@@ -223,7 +197,7 @@
               show: false,
             },
             min: 0,
-            max: 5,
+            max: 2,
           },
         },
       },
@@ -246,7 +220,7 @@
       enabled: false,
     },
     markers: {
-      size: 5,
+      size: 3,
     },
     title: {
       text: 'Spenning',
@@ -271,7 +245,7 @@
       title: {
         text: 'V',
       },
-      min: 0,
+      min: 10,
       max: 15,
     },
     xaxis: {
@@ -310,7 +284,7 @@
             title: {
               show: false,
             },
-            min: 0,
+            min: 10,
             max: 15,
           },
         },

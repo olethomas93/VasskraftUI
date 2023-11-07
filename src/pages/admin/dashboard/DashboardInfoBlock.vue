@@ -22,17 +22,28 @@
         </va-card>
       </div>
 
-      <div class="w-full grid grid-cols-12 gap-1">
-        <div style="width: 100%; height: 200px"></div>
+      <div class="w-full grid grid-cols-12 gap-6">
+        <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12">
+          <va-card-title> </va-card-title>
+          <va-card-content>
+            <iframe
+              style="min-height: 366px"
+              width="100%"
+              height="100vh"
+              src="https://www.yr.no/nb/innhold/1-107561/meteogram.svg"
+              frameborder="0"
+            ></iframe>
+          </va-card-content>
+        </va-card>
       </div>
     </div>
 
-    <div class="col-span-12 lg:col-span-6 flex flex-wrap">
+    <div class="col-span-12 lg:col-span-6 flex flex-wrap gap-6">
       <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12">
         <va-card-title> </va-card-title>
         <va-card-content>
           <iframe
-            style="height: 360px"
+            style="min-height: 366px"
             width="100%"
             height="100vh"
             src="https://www.yr.no/nb/innhold/1-107561/card.html"

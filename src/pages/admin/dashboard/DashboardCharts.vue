@@ -87,7 +87,7 @@
     let voltData: any[] = []
     for (let obj in data) {
       let temp = new Date(data[obj].time * 1000)
-
+      temp.setHours(temp.getHours() - 2)
       retData.push({ x: temp.toUTCString(), y: data[obj].sensor })
       voltData.push({ x: temp.toUTCString(), y: data[obj].voltage })
     }

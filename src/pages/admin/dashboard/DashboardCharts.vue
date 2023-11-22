@@ -120,7 +120,7 @@
       type: 'area',
       stacked: false,
       zoom: {
-        type: 'x',
+        type: 'xy',
         enabled: true,
         autoScaleYaxis: true,
       },
@@ -181,7 +181,12 @@
         breakpoint: 1000,
         options: {
           chart: {
-            height: 300,
+            height: 400,
+            zoom: {
+              type: 'x',
+              enabled: true,
+              autoScaleYaxis: true,
+            },
           },
           plotOptions: {},
           legend: {
@@ -196,8 +201,6 @@
             title: {
               show: false,
             },
-            min: 0,
-            max: 2,
           },
         },
       },
@@ -208,7 +211,7 @@
       type: 'area',
       stacked: false,
       zoom: {
-        type: 'x',
+        type: 'xy',
         enabled: true,
         autoScaleYaxis: true,
       },
@@ -269,7 +272,12 @@
         breakpoint: 1000,
         options: {
           chart: {
-            height: 300,
+            height: 400,
+            zoom: {
+              type: 'x',
+              enabled: true,
+              autoScaleYaxis: true,
+            },
           },
           plotOptions: {},
           legend: {
@@ -284,8 +292,6 @@
             title: {
               show: false,
             },
-            min: 10,
-            max: 15,
           },
         },
       },

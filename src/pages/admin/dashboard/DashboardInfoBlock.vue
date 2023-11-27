@@ -75,11 +75,10 @@
   function parseDate(data: any) {
     let keys = Object.keys(data)
     let temp = keys.pop()
-    console.log(temp)
     lastValues.value = data[temp]
-
-    console.log('DATA')
-    console.log(lastValues.value)
+    var temp2 = new Date(lastValues.value.time * 1000)
+    temp2.setHours(temp2.getHours() - 4)
+    lastValues.value.time = temp2.toLocaleString()
   }
   const { t } = useI18n()
   const { colors } = useColors()

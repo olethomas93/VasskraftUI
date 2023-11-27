@@ -87,7 +87,7 @@
     let voltData: any[] = []
     for (let obj in data) {
       let temp = new Date(data[obj].time * 1000)
-      temp.setHours(temp.getHours() - 2)
+      temp.setHours(temp.getHours() - 4)
       retData.push({ x: temp.toUTCString(), y: data[obj].sensor })
       voltData.push({ x: temp.toUTCString(), y: data[obj].voltage })
     }
@@ -118,11 +118,9 @@
   const vassConfig = {
     chart: {
       type: 'area',
-      stacked: false,
       zoom: {
-        type: 'xy',
+        type: 'x',
         enabled: true,
-        autoScaleYaxis: true,
       },
       toolbar: {
         autoSelected: 'zoom',
@@ -131,20 +129,20 @@
     dataLabels: {
       enabled: false,
     },
-    markers: {
-      size: 3,
-    },
     title: {
       text: 'Vassføring',
       align: 'left',
+    },
+    markers: {
+      size: 2,
     },
     fill: {
       type: 'gradient',
       gradient: {
         shadeIntensity: 1,
         inverseColors: false,
-        opacityFrom: 0.5,
-        opacityTo: 0,
+        opacityFrom: 0.7,
+        opacityTo: 0.9,
         stops: [0, 90, 100],
       },
     },
@@ -157,8 +155,6 @@
       title: {
         text: 'mVs',
       },
-      min: 0,
-      max: 2,
     },
     xaxis: {
       type: 'datetime',
@@ -235,7 +231,7 @@
         shadeIntensity: 1,
         inverseColors: false,
         opacityFrom: 0.5,
-        opacityTo: 0,
+        opacityTo: 1,
         stops: [0, 90, 100],
       },
     },
@@ -248,8 +244,6 @@
       title: {
         text: 'V',
       },
-      min: 10,
-      max: 15,
     },
     xaxis: {
       type: 'datetime',

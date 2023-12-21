@@ -61,7 +61,9 @@
 
   const queryData = (start: Date, end: Date) => {
     const startTimestamp = start.getTime() / 1000
-    const endTimestamp = end.getTime() / 1000
+    const ole = end
+    ole.setHours(23)
+    const endTimestamp = ole.getTime() / 1000
 
     const test = query(
       child(dbRef, 'data'),
@@ -76,7 +78,6 @@
   }
 
   onMounted(() => {
-    console.log(range.value)
     queryData(range.value.start, range.value.end)
   })
 </script>

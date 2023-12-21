@@ -11,8 +11,10 @@
       </div>
     </template>
     <div class="app-navbar-center">
-      <h2 class="va-h2">LARSKRAFT</h2>
+      <h2 class="va-h2">GOD JUL LARS</h2>
+      <img style="width: 6%" src="/santahat.png" />
     </div>
+
     <template #right>
       <app-navbar-actions class="app-navbar__actions" :user-name="user.email" />
     </template>
@@ -78,6 +80,7 @@
     display: flex;
     align-items: center;
     height: 1rem;
+    justify-content: center;
 
     @media screen and (max-width: 1200px) {
       &__github-button {

@@ -3,7 +3,7 @@
     <template #image>
       <vuestic-logo />
     </template>
-    <va-button :to="{ name: 'dashboard' }"> Back to dashboard </va-button>
+    <va-button :to="{ name: 'login' }"> Back to login </va-button>
   </va-page-not-found>
 </template>
 

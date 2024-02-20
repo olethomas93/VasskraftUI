@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-
+import { useUserStore } from '../stores/user'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
@@ -7,15 +7,28 @@ import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
 
+const requireAuth = async (to, from, next) => {
+  const userStore = useUserStore()
+  userStore.loadingSession = true
+  const user = await userStore.currentUser()
+  if (user) {
+    next()
+  } else {
+    next('/login')
+  }
+  userStore.loadingSession = false
+}
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
-    redirect: { name: 'dashboard' },
+    redirect: { name: 'not-found-simple' },
   },
   {
     name: 'admin',
     path: '/admin',
     component: AppLayout,
+    beforeEnter: [requireAuth],
     children: [
       {
         name: 'dashboard',

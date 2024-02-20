@@ -3,6 +3,7 @@
     <va-card class="col-span-12 lg:col-span-12 gap-6">
       <va-card-title> Kart </va-card-title>
       <leaflet-maps-page></leaflet-maps-page>
+      <map-libre-maps-page></map-libre-maps-page>
     </va-card>
   </div>
 </template>
@@ -12,8 +13,8 @@
   import { useI18n } from 'vue-i18n'
   import LeafletMapsPage from '../maps/leaflet-maps/LeafletMapsPage.vue'
 
-  import LineMap from '../../../components/maps/LineMap.vue'
   import { lineMapData, compareStrings } from '../../../data/maps/lineMapData'
+  import MapLibreMapsPage from '../maps/maplibre-maps/MapLibreMapsPage.vue'
 
   const { t } = useI18n()
 

@@ -18,12 +18,7 @@
       :error-messages="passwordErrors"
     />
 
-    <div class="auth-layout__options flex items-center justify-between">
-      <va-checkbox v-model="keepLoggedIn" class="mb-0" :label="t('auth.keep_logged_in')" />
-      <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">{{
-        t('auth.recover_password')
-      }}</router-link>
-    </div>
+    <div class="auth-layout__options flex items-center justify-between"></div>
 
     <div class="flex justify-center mt-4">
       <va-button class="my-0" @click="signinRedirect">{{ t('auth.login') }}</va-button>
@@ -36,6 +31,9 @@
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { authStore } from '../../../stores/authStore'
+  import { useUserStore } from '../../../stores/user'
+
+  const userStore = useUserStore()
   import { getRedirectResult, signInWithEmailAndPassword, signOut } from 'firebase/auth'
   import { useCurrentUser, useFirebaseAuth } from 'vuefire'
   const { t } = useI18n()
@@ -51,12 +49,12 @@
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
   const error = ref(null)
-  function signinRedirect() {
+  async function signinRedirect() {
     emailErrors.value = email.value ? [] : ['Email is required']
     passwordErrors.value = password.value ? [] : ['Password is required']
     if (!formReady.value) return
-
-    useAuthStore.login(email.value, password.value)
+    await userStore.loginUser(email.value, password.value)
+    //useAuthStore.login(email.value, password.value)
   }
 
   function onsubmit() {
@@ -65,7 +63,7 @@
     emailErrors.value = email.value ? [] : ['Email is required']
     passwordErrors.value = password.value ? [] : ['Password is required']
 
-    router.push({ name: 'dashboard' })
+    router.replace({ name: 'dashboard' })
   }
 
   onMounted(() => {

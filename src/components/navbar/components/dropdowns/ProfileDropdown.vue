@@ -25,13 +25,13 @@
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
-  import { authStore } from '../../../../stores/authStore'
+  import { useUserStore } from '../../../../stores/user'
   const { t } = useI18n()
   const { colors } = useColors()
-  const store = authStore()
+  const store = useUserStore()
 
   function signout() {
-    store.logout()
+    store.logoutUser()
   }
 
   withDefaults(

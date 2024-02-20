@@ -11,8 +11,7 @@
       </div>
     </template>
     <div class="app-navbar-center">
-      <h2 class="va-h2">GOD JUL LARS</h2>
-      <img style="width: 6%" src="/santahat.png" />
+      <h2 class="va-h2">Dashboard</h2>
     </div>
 
     <template #right>

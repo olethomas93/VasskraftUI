@@ -28,7 +28,7 @@ export const useUserStore = defineStore('userStore', {
         const { user } = await signInWithEmailAndPassword(auth, email, password)
         console.log(user)
         this.userData = { email: user.email, uid: user.uid }
-        router.replace({ name: 'dashboard' })
+        router.replace({ name: 'dashboard', params: { id: user.uid } })
       } catch (error) {
         console.log(error)
       } finally {

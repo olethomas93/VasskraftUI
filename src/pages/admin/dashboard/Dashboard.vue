@@ -29,8 +29,6 @@
   import DashboardCharts from './DashboardCharts.vue'
   import DashboardMap from './DashboardMap.vue'
   import DashboardInfoBlock from './DashboardInfoBlock.vue'
-  import { firebaseApp } from '../../../main'
-  import { once } from 'events'
 
   const data = ref()
   const dbRef = storageRef(getDatabase())

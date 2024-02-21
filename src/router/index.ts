@@ -12,27 +12,25 @@ const requireAuth = async (to, from, next) => {
   userStore.loadingSession = true
   const user = await userStore.currentUser()
   if (user) {
+    const userData = await userStore.$state.userData
     next()
   } else {
-    next('/login')
+    next({ name: 'login' })
   }
   userStore.loadingSession = false
 }
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/:catchAll(.*)',
-    redirect: { name: 'not-found-simple' },
-  },
-  {
     name: 'admin',
-    path: '/admin',
+    path: '/',
     component: AppLayout,
     beforeEnter: [requireAuth],
+    redirect: 'dashboard',
     children: [
       {
         name: 'dashboard',
-        path: 'dashboard/:id',
+        path: 'dashboard',
         component: () => import('../pages/admin/dashboard/Dashboard.vue'),
       },
       {

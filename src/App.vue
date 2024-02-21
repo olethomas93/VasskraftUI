@@ -10,7 +10,7 @@
   const store = authStore()
 
   onMounted(() => {
-    store.init()
+    //store.init()
   })
 </script>
 

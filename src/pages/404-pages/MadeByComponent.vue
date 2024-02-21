@@ -1,8 +1,8 @@
 <template>
   <div class="made-by-component va-text-center pb-4">
     <span>
-      ©2021. Made by
-      <a href="https://epicmax.co" class="va-link">Epicmax</a>
+      ©2024. Made by
+      <a href="https://northei.no" class="va-link">Northei</a>
     </span>
   </div>
 </template>

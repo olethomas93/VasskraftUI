@@ -1,7 +1,7 @@
 <template>
   <va-page-not-found class="va-page-not-found-simple">
     <template #image>
-      <vuestic-logo />
+      <h1>NORTHEI VASSKRAFT</h1>
     </template>
     <va-button :to="{ name: 'login' }"> Back to login </va-button>
   </va-page-not-found>

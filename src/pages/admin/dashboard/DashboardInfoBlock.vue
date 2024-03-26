@@ -51,6 +51,17 @@
           ></iframe>
         </va-card-content>
       </va-card>
+      <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12">
+        <va-card-title> </va-card-title>
+        <va-card-content>
+          <iframe
+            title="Strømpriser fra hvakosterstrommen.no"
+            src="https://www.hvakosterstrommen.no/i/tromso?mode=embed&layout=minimal&hide-examples=1"
+            style="width: 100%; height: 800px; border: 0"
+            onload="iFrameResize({heightCalculationMethod: 'taggedElement', checkOrigin: false}, this);"
+          ></iframe>
+        </va-card-content>
+      </va-card>
     </div>
   </div>
 </template>

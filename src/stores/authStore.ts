@@ -15,7 +15,7 @@ export const authStore = defineStore('storeAuth', {
     return {
       email: '',
       password: '',
-      auth: useFirebaseAuth(),
+      auth: '',
       user: { id: '', email: ' ' },
     }
   },
@@ -24,7 +24,7 @@ export const authStore = defineStore('storeAuth', {
     async login(email: any, password: any) {
       console.log(email)
       try {
-        const res = await signInWithEmailAndPassword(this.auth!, email, password)
+        const res = await signInWithEmailAndPassword(useFirebaseAuth()!, email, password)
 
         if (res) {
           router.replace({ name: 'dashboard' })
@@ -43,7 +43,6 @@ export const authStore = defineStore('storeAuth', {
     init() {
       onAuthStateChanged(this.auth!, (user) => {
         if (user) {
-          console.log(user.email)
           this.user.id = user.uid
           this.user.email = user.email!
           router.replace({ name: 'dashboard' })

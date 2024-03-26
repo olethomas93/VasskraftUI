@@ -2,7 +2,7 @@
   <div class="grid grid-cols-12 gap-6">
     <va-card class="col-span-12 lg:col-span-12 gap-6">
       <va-card-title> Kart </va-card-title>
-      <leaflet-maps-page></leaflet-maps-page>
+      <!-- <leaflet-maps-page></leaflet-maps-page> -->
       <map-libre-maps-page></map-libre-maps-page>
     </va-card>
   </div>

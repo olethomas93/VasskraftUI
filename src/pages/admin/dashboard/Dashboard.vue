@@ -1,18 +1,30 @@
 <template>
   <div class="dashboard">
-    <div>
-      <h6>Time Picker</h6>
-      <VaDatePicker v-model="range" mode="range" />
-    </div>
-    <dashboard-charts :data="data" />
-    <dashboard-info-block :data="data"></dashboard-info-block>
-    <dashboard-map></dashboard-map>
+    <VaTabs v-model="value" grow>
+      <template #tabs>
+        <VaTab v-for="tab in tabs" :key="tab">
+          {{ tab.name }}
+        </VaTab>
+      </template>
+      <div>
+        <div>
+          <h6>Time Picker</h6>
+          <VaDatePicker v-model="range" mode="range" />
+        </div>
+        <dashboard-charts :data="data" />
+        <dashboard-info-block :data="data"></dashboard-info-block>
+        <dashboard-map></dashboard-map>
+      </div>
+    </VaTabs>
   </div>
 </template>
 
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue'
   import { useCollection, useFirestore } from 'vuefire'
+  import { collection, doc, setDoc, getDoc } from 'firebase/firestore'
+  import { useUserStore } from '../../../stores/user'
+  import { db } from '../../../firebaseConfig'
   import {
     getDatabase,
     onValue,
@@ -25,13 +37,28 @@
     startAt,
     endAt,
   } from 'firebase/database'
-  import { getFirestore, collection } from 'firebase/firestore'
   import DashboardCharts from './DashboardCharts.vue'
   import DashboardMap from './DashboardMap.vue'
   import DashboardInfoBlock from './DashboardInfoBlock.vue'
-
+  const store = useUserStore()
   const data = ref()
   const dbRef = storageRef(getDatabase())
+  const items = ref([])
+  const value = ref()
+  const tabs = ref()
+  const getUser = async () => {
+    const docRef = doc(db, 'users', 'lJTXqbmEmueXZYDsCufqlM6eo6A2')
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+      tabs.value = docSnap.data().plants
+      console.log('Document data:', docSnap.data())
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log('No such document!')
+    }
+  }
+
   get(child(dbRef, `data`))
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -76,6 +103,7 @@
   }
 
   onMounted(() => {
+    getUser()
     queryData(range.value.start, range.value.end)
   })
 </script>

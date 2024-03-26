@@ -3,7 +3,7 @@
     <va-card class="col-span-12 lg:col-span-12 gap-6">
       <va-card-title> Kart </va-card-title>
       <leaflet-maps-page></leaflet-maps-page>
-      <map-libre-maps-page></map-libre-maps-page>
+      <!-- <map-libre-maps-page></map-libre-maps-page> -->
     </va-card>
   </div>
 </template>
@@ -19,8 +19,6 @@
   const { t } = useI18n()
 
   const cities = ref(lineMapData.cities)
-  const mainCity = ref('Vilnius')
-  const homeCity = ref('Vilnius')
 
   function addAddress(address: { city: string; country: string }) {
     cities.value = cities.value.map((mapItem) =>

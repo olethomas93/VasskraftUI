@@ -3,7 +3,7 @@
     <VaTabs v-model="value" grow>
       <template #tabs>
         <VaTab v-for="tab in tabs" :key="tab">
-          {{ tab.name }}
+          {{ tab }}
         </VaTab>
       </template>
       <div>
@@ -40,23 +40,21 @@
   import DashboardCharts from './DashboardCharts.vue'
   import DashboardMap from './DashboardMap.vue'
   import DashboardInfoBlock from './DashboardInfoBlock.vue'
+  import { useRoute } from 'vue-router'
   const store = useUserStore()
   const data = ref()
   const dbRef = storageRef(getDatabase())
   const items = ref([])
   const value = ref()
   const tabs = ref()
+  const route = useRoute()
   const getUser = async () => {
-    const docRef = doc(db, 'users', 'lJTXqbmEmueXZYDsCufqlM6eo6A2')
-    const docSnap = await getDoc(docRef)
+    const customers = store.currentUser().customers
+    const arr = Object.keys(customers).map((key) => {
+      return customers[key]
+    })
 
-    if (docSnap.exists()) {
-      tabs.value = docSnap.data().plants
-      console.log('Document data:', docSnap.data())
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log('No such document!')
-    }
+    tabs.value = arr
   }
 
   get(child(dbRef, `data`))

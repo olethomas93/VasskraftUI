@@ -41,11 +41,9 @@
   const auth = useFirebaseAuth()
   const email = ref('')
   const password = ref('')
-  const keepLoggedIn = ref(false)
   const emailErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
   const router = useRouter()
-  const useAuthStore = authStore()
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
   const error = ref(null)
@@ -66,10 +64,10 @@
     router.replace({ name: 'dashboard' })
   }
 
-  onMounted(() => {
-    getRedirectResult(auth!).catch((reason) => {
-      console.error('Failed redirect result', reason)
-      error.value = reason
-    })
-  })
+  // onMounted(() => {
+  //   getRedirectResult(auth!).catch((reason) => {
+  //     console.error('Failed redirect result', reason)
+  //     error.value = reason
+  //   })
+  // })
 </script>

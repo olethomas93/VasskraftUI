@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { useUserStore } from '../stores/user'
+import { useAuthStore } from '../stores/useAuthStore'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
@@ -7,25 +7,25 @@ import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
 
-const requireAuth = async (to, from, next) => {
-  const userStore = useUserStore()
-  userStore.loadingSession = true
-  const user = await userStore.currentUser()
-  if (user) {
-    const userData = await userStore.$state.userData
-    next()
-  } else {
-    next({ name: 'login' })
-  }
-  userStore.loadingSession = false
-}
+// const requireAuth = async (to, from, next) => {
+//   const userStore = useUserStore()
+//   userStore.loadingSession = true
+//   const user = await userStore.currentUser()
+//   if (user) {
+//     const userData = await userStore.$state.userData
+//     next()
+//   } else {
+//     next({ name: 'login' })
+//   }
+//   userStore.loadingSession = false
+// }
 
 const routes: Array<RouteRecordRaw> = [
   {
     name: 'admin',
     path: '/',
     component: AppLayout,
-    beforeEnter: [requireAuth],
+    meta: { requiresAuth: true },
     redirect: 'dashboard',
     children: [
       {
@@ -236,6 +236,19 @@ const router = createRouter({
     }
   },
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!authStore.token) {
+      next({ name: 'login' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { useAuthStore } from '../stores/useAuthStore'
+import { useUserStore } from '../stores/user'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
-
+//import http from '../components/services/httpService';
+import axios from 'axios'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
 
@@ -239,16 +240,25 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!authStore.token) {
-      next({ name: 'login' })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
+  const userStore = useUserStore()
+  axios
+    .get('http://localhost:3000' + '/v1/auth/session-status', { withCredentials: true })
+    .then((response) => {
+      const isLoggedIn = response.data.isLoggedIn
+      userStore.userData = response.data.user
+      if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
+        next({ name: 'login' })
+      } else {
+        next()
+      }
+    })
+    .catch(() => {
+      if (to.matched.some((record) => record.meta.requiresAuth)) {
+        next({ name: 'login' })
+      } else {
+        next()
+      }
+    })
 })
 
 export default router

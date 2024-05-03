@@ -68,7 +68,7 @@
   watch(
     () => props.data,
     () => {
-      parseDate(props.data)
+      // parseDate(props.data)
     },
   )
 

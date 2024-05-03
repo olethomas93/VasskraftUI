@@ -85,12 +85,13 @@
   function parseDate(data: any) {
     let retData: any[] = []
     let voltData: any[] = []
-    for (let obj in data) {
-      let temp = new Date(data[obj].time * 1000)
-      temp.setHours(temp.getHours() - 4)
-      retData.push({ x: temp.toUTCString(), y: data[obj].sensor })
-      voltData.push({ x: temp.toUTCString(), y: data[obj].voltage })
+    for (let obj in data.voltage) {
+      voltData.push({ x: data.voltage[obj]._time, y: data.voltage[obj]._value })
     }
+    for (let obj in data.level) {
+      retData.push({ x: data.level[obj]._time, y: data.level[obj]._value })
+    }
+    console.log(retData)
     vasskraft.value = retData
     voltage.value = voltData
     return retData

@@ -9,26 +9,13 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import LeafletMapsPage from '../maps/leaflet-maps/LeafletMapsPage.vue'
+  import { useUserStore } from '../../../stores/user'
 
   import { lineMapData, compareStrings } from '../../../data/maps/lineMapData'
   import MapLibreMapsPage from '../maps/maplibre-maps/MapLibreMapsPage.vue'
-
-  const { t } = useI18n()
-
-  const cities = ref(lineMapData.cities)
-
-  function addAddress(address: { city: string; country: string }) {
-    cities.value = cities.value.map((mapItem) =>
-      compareStrings(mapItem.title, address.city) && compareStrings(mapItem.country, address.country)
-        ? { ...mapItem, color: 'success' }
-        : mapItem,
-    )
-  }
-
-  defineExpose({ addAddress })
 </script>
 
 <style>

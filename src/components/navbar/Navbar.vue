@@ -15,7 +15,7 @@
     </div>
 
     <template #right>
-      <app-navbar-actions class="app-navbar__actions" :user-name="user.email" />
+      <app-navbar-actions class="app-navbar__actions" user-name="hello" />
     </template>
   </va-navbar>
 </template>
@@ -24,18 +24,19 @@
   import { computed } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGlobalStore } from '../../stores/global-store'
-  import { authStore } from '../../stores/authStore'
+  import { useUserStore } from '../../stores/user'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
   import VuesticLogo from '../VuesticLogo.vue'
   import VaIconMenuCollapsed from '../icons/VaIconMenuCollapsed.vue'
   import AppNavbarActions from './components/AppNavbarActions.vue'
-  const getAuthStore = authStore()
+  const getUserStore = useUserStore()
   const GlobalStore = useGlobalStore()
   const { t } = useI18n()
 
   const { isSidebarMinimized } = storeToRefs(GlobalStore)
-  const { user } = storeToRefs(getAuthStore)
+  const { userData } = storeToRefs(getUserStore)
+  console.log(userData)
   const { getColors } = useColors()
   const colors = computed(() => getColors())
 </script>

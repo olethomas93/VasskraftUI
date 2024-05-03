@@ -3,7 +3,7 @@
     <VaTabs v-model="value" grow>
       <template #tabs>
         <VaTab v-for="tab in tabs" :key="tab">
-          {{ tab }}
+          {{ tab.sensorId }}
         </VaTab>
       </template>
       <div>
@@ -21,10 +21,7 @@
 
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue'
-  import { useCollection, useFirestore } from 'vuefire'
-  import { collection, doc, setDoc, getDoc } from 'firebase/firestore'
   import { useUserStore } from '../../../stores/user'
-  import { db } from '../../../firebaseConfig'
   import {
     getDatabase,
     onValue,
@@ -41,20 +38,24 @@
   import DashboardMap from './DashboardMap.vue'
   import DashboardInfoBlock from './DashboardInfoBlock.vue'
   import { useRoute } from 'vue-router'
+  import { start } from 'repl'
   const store = useUserStore()
   const data = ref()
   const dbRef = storageRef(getDatabase())
   const items = ref([])
-  const value = ref()
+  const value = ref(0)
+  const position = ref()
+  const customer = ref()
   const tabs = ref()
   const route = useRoute()
-  const getUser = async () => {
-    const customers = store.currentUser().customers
-    const arr = Object.keys(customers).map((key) => {
-      return customers[key]
-    })
+  const getCustomer = async () => {
+    const customers = await store.getCustomer()
+    customer.value = customers
+    position.value = JSON.parse(customers.meta).position
+    console.log(position.value)
+    items.value = customers.sensors
 
-    tabs.value = arr
+    tabs.value = items.value
   }
 
   get(child(dbRef, `data`))
@@ -82,7 +83,24 @@
     queryData(newRange.start, newRange.end)
   })
 
+  watch(value, async (newRange, oldRange) => {
+    queryDataApi(range.value.start, range.value.end)
+  })
+
   const queryData = (start: Date, end: Date) => {
+    if (start && end) {
+      queryDataApi(start, end)
+    }
+  }
+  const queryDataApi = async (start: Date, end: Date) => {
+    const sensor = items.value[value.value]
+    console.log(start, end)
+    const res = await store.getSensorHistory({ sensorId: sensor.sensorId, startDate: start, endDate: end })
+    if (res) {
+      data.value = res.data
+    }
+  }
+  const queryDataFireBase = (start: Date, end: Date) => {
     const startTimestamp = start.getTime() / 1000
     const ole = end
     ole.setHours(23)
@@ -100,8 +118,8 @@
     })
   }
 
-  onMounted(() => {
-    getUser()
+  onMounted(async () => {
+    await getCustomer()
     queryData(range.value.start, range.value.end)
   })
 </script>

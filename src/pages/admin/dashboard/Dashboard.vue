@@ -12,7 +12,7 @@
           <VaDatePicker v-model="range" mode="range" />
         </div>
         <dashboard-charts :data="data" />
-        <dashboard-info-block :data="data"></dashboard-info-block>
+        <dashboard-info-block :data="data" :place-number="placeNumber"></dashboard-info-block>
         <dashboard-map :pos="position"></dashboard-map>
       </div>
     </VaTabs>
@@ -34,6 +34,7 @@
   const value = ref(0)
   const customer = ref()
   const position = ref({ lat: 60, lng: 18 })
+  const placeNumber = ref()
   const tabs = ref()
   const getCustomer = async () => {
     const customers = await store.getCustomer()
@@ -41,7 +42,9 @@
     //position.value = JSON.parse(customers.meta).position
     items.value = customers.sensors
     position.value = JSON.parse(items.value[value.value].meta).position
+    await getPlace()
     tabs.value = items.value
+    console.log('tabs', tabs.value)
   }
   //   position.value = computed(() => {
   //     if(items.value[value.value]){
@@ -52,8 +55,9 @@
   //     }
 
   // })
-  const update = () => {
+  const update = async () => {
     position.value = JSON.parse(items.value[value.value].meta).position
+    await getPlace()
   }
 
   get(child(dbRef, `data`))
@@ -88,6 +92,18 @@
   const queryData = (start: Date, end: Date) => {
     if (start && end) {
       queryDataApi(start, end)
+    }
+  }
+  const getPlace = async () => {
+    try {
+      // https://ws.geonorge.no/stedsnavn/v1/punkt?nord=${this.position.latitude}&ost=${this.position.longitude}&koordsys=4258&radius=500&utkoordsys=4258&treffPerSide=10&side=1
+      let res = await (
+        await fetch(`https://www.windy.northei.no/place?lat=${position.value.lat}&lng=${position.value.lng}`)
+      ).json()
+      placeNumber.value = res._embedded.location[0].id
+      console.log(placeNumber.value)
+    } catch (e) {
+      console.log(e)
     }
   }
   const queryDataApi = async (start: Date, end: Date) => {

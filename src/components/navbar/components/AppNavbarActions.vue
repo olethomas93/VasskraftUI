@@ -1,6 +1,6 @@
 <template>
   <div class="app-navbar-actions">
-    <!-- <color-dropdown class="app-navbar-actions__item" /> -->
+    <color-dropdown class="app-navbar-actions__item" />
     <!-- <notification-dropdown class="app-navbar-actions__item" /> -->
     <!-- <settings-dropdown class="app-navbar-actions__item" /> -->
     <!-- <language-dropdown class="app-navbar-actions__item" /> -->
@@ -11,10 +11,7 @@
 </template>
 
 <script setup lang="ts">
-  import LanguageDropdown from './dropdowns/LanguageDropdown.vue'
   import ProfileDropdown from './dropdowns/ProfileDropdown.vue'
-  import NotificationDropdown from './dropdowns/NotificationDropdown.vue'
-  import MessageDropdown from './dropdowns/MessageDropdown.vue'
   import ColorDropdown from './dropdowns/ColorDropdown.vue'
 
   withDefaults(

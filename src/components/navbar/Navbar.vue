@@ -11,7 +11,7 @@
       </div>
     </template>
     <div class="app-navbar-center">
-      <h2 class="va-h2">Dashboard</h2>
+      <h2 v-if="getUserStore.customerData" class="va-h2">{{ getUserStore.customerData.name }}</h2>
     </div>
 
     <template #right>
@@ -27,16 +27,13 @@
   import { useUserStore } from '../../stores/user'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
-  import VuesticLogo from '../VuesticLogo.vue'
   import VaIconMenuCollapsed from '../icons/VaIconMenuCollapsed.vue'
   import AppNavbarActions from './components/AppNavbarActions.vue'
   const getUserStore = useUserStore()
   const GlobalStore = useGlobalStore()
-  const { t } = useI18n()
 
   const { isSidebarMinimized } = storeToRefs(GlobalStore)
-  const { userData } = storeToRefs(getUserStore)
-  console.log(userData)
+
   const { getColors } = useColors()
   const colors = computed(() => getColors())
 </script>

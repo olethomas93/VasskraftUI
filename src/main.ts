@@ -2,8 +2,7 @@ import { createApp } from 'vue'
 import i18n from './i18n'
 import { createVuestic } from 'vuestic-ui'
 import { createGtm } from '@gtm-support/vue-gtm'
-import { initializeApp } from 'firebase/app'
-import { getFirestore, collection } from 'firebase/firestore'
+import { getFirestore } from 'firebase/firestore'
 import { firebaseApp } from './firebaseConfig'
 import VueApexCharts from 'vue3-apexcharts'
 import stores from './stores'
@@ -12,7 +11,6 @@ import vuesticGlobalConfig from './services/vuestic-ui/global-config'
 import App from './App.vue'
 import { VueFire, VueFireAuth } from 'vuefire'
 
-const db = getFirestore(firebaseApp)
 const app = createApp(App)
 
 app.use(stores)

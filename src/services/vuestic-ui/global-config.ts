@@ -1,15 +1,21 @@
+import { Light } from 'maplibre-gl'
 import VaIcon from './components/va-icon'
 import iconsConfig from './icons-config/icons-config'
-// import { COLOR_THEMES } from './themes'
+import { COLOR_THEMES } from './themes'
+import { VaCard } from 'vuestic-ui/web-components'
+import { color } from '@amcharts/amcharts5'
 
 export default {
-  // colors: {
-  //   presets: {
-  //     original: {
-  //       ...COLOR_THEMES[3].colors,
-  //     },
-  //   },
-  // },
+  colors: {
+    presets: {
+      dark: {
+        ...COLOR_THEMES[1].colors,
+      },
+      light: {
+        ...COLOR_THEMES[0].colors,
+      },
+    },
+  },
   icons: iconsConfig,
   breakpoint: {
     enabled: true,

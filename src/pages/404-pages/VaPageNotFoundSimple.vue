@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-  import VuesticLogo from '../../components/VuesticLogo.vue'
   import VaPageNotFound from './VaPageNotFound.vue'
 </script>
 

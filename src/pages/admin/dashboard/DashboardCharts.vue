@@ -7,7 +7,7 @@
           :options="vassConfig"
           :data="[
             {
-              name: 'Vassføring',
+              name: 'Nivå',
               data: vasskraft,
             },
           ]"
@@ -22,7 +22,7 @@
           :options="voltConfig"
           :data="[
             {
-              name: 'Spenning',
+              name: 'Batterispenning',
               data: voltage,
             },
           ]"
@@ -33,15 +33,13 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, watch } from 'vue'
-  import { useFirestore } from 'vuefire'
-  import { getDatabase, onValue, ref as storageRef, get, child } from 'firebase/database'
+  import { ref, watch } from 'vue'
+  import { getDatabase, ref as storageRef } from 'firebase/database'
   import { useI18n } from 'vue-i18n'
 
   import { doughnutChartData, lineChartData } from '../../../data/charts'
   import { useChartData } from '../../../data/charts/composables/useChartData'
   import { usePartOfChartData } from './composables/usePartOfChartData'
-  import VaChart from '../../../components/va-charts/VaChart.vue'
   import apexChart from '../../../components/va-charts/apexChart.vue'
 
   const { t } = useI18n()
@@ -49,8 +47,7 @@
   const props = defineProps<{
     data: any
   }>()
-  const doughnutChart = ref()
-  const dbRef = storageRef(getDatabase())
+
   // get(child(dbRef, `data`))
   //   .then((snapshot) => {
   //     if (snapshot.exists()) {
@@ -131,7 +128,7 @@
       enabled: false,
     },
     title: {
-      text: 'Vassføring',
+      text: 'Nivå',
       align: 'left',
     },
     markers: {
@@ -220,14 +217,14 @@
       enabled: false,
     },
     markers: {
-      size: 3,
+      size: 1,
     },
     title: {
-      text: 'Spenning',
+      text: 'Batterispenning',
       align: 'left',
     },
     fill: {
-      type: 'gradient',
+      type: 'solid',
       gradient: {
         shadeIntensity: 1,
         inverseColors: false,
@@ -285,7 +282,7 @@
               },
             },
             title: {
-              show: false,
+              show: true,
             },
           },
         },

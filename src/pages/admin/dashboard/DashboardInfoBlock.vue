@@ -2,22 +2,22 @@
   <div class="pt-6 grid grid-cols-12 gap-6">
     <div class="col-span-12 lg:col-span-6 flex flex-wrap">
       <div class="w-full pb-6 grid grid-cols-12 gap-6">
-        <va-card class="col-span-12 sm:col-span-4 mb-8" color="success">
+        <va-card class="col-span-12 sm:col-span-4 mb-8">
           <va-card-content>
-            <h2 v-if="lastValues" class="va-h2 m-0 text-white">{{ lastValues.sensor.toFixed(2) }}</h2>
-            <p class="text-white">Målt dybde</p>
+            <h2 v-if="lastValues" class="va-h2 m-0">{{ lastValues.sensor.toFixed(2) }}</h2>
+            <p>Målt dybde</p>
           </va-card-content>
         </va-card>
-        <va-card class="col-span-12 sm:col-span-4 mb-4" color="success">
+        <va-card class="col-span-12 sm:col-span-4 mb-4">
           <va-card-content>
-            <h2 v-if="lastValues" class="va-h2 m-0 text-white">{{ lastValues.voltage.toFixed(2) }}</h2>
-            <p class="text-white">Spenning</p>
+            <h2 v-if="lastValues" class="va-h2 m-0">{{ lastValues.voltage.toFixed(2) }}</h2>
+            <p>Spenning</p>
           </va-card-content>
         </va-card>
-        <va-card class="col-span-12 sm:col-span-4 mb-8" color="success">
+        <va-card class="col-span-12 sm:col-span-4 mb-8">
           <va-card-content>
-            <h2 v-if="lastValues" class="va-h2 m-0 text-white">{{ lastValues.time }}</h2>
-            <p class="text-white">Siste timestamp</p>
+            <h2 v-if="lastValues" class="va-h2 m-0">{{ lastValues.time }}</h2>
+            <p>Siste timestamp</p>
           </va-card-content>
         </va-card>
       </div>
@@ -30,7 +30,7 @@
               style="min-height: 366px"
               width="100%"
               height="100vh"
-              src="https://www.yr.no/nb/innhold/1-107561/meteogram.svg"
+              :src="`https://www.yr.no/nb/innhold/1-107561/meteogram.svg?mode=${currentPresetName}`"
               frameborder="0"
             ></iframe>
           </va-card-content>
@@ -46,7 +46,7 @@
             style="min-height: 366px"
             width="100%"
             height="100vh"
-            src="https://www.yr.no/nb/innhold/1-107561/card.html"
+            :src="`https://www.yr.no/nb/innhold/1-107561/card.html?mode=${currentPresetName}`"
             frameborder="0"
           ></iframe>
         </va-card-content>
@@ -81,7 +81,11 @@
     lastValues.value.time = temp2.toLocaleString()
   }
   const { t } = useI18n()
-  const { colors } = useColors()
+  const { currentPresetName } = useColors()
+
+  watch(currentPresetName, async (newCurrentPresetName, oldCurrentPresetName) => {
+    console.log('changing from dashboard:', newCurrentPresetName)
+  })
 
   const infoTiles = ref([
     {

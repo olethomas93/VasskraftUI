@@ -1,21 +1,25 @@
 <template>
   <div class="leaflet-maps-page">
     <va-card class="leaflet-maps-page__widget" title="Leaflet Maps">
-      <leaflet-map :pos="position" style="height: 65vh" />
+      <leaflet-map :pos="myPropValue" style="height: 65vh" />
     </va-card>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue'
-  import { useUserStore } from '../../../../stores/user'
+  import { onMounted, ref, watch } from 'vue'
   import LeafletMap from './LeafletMap.vue'
-
-  const store = useUserStore()
-  const position = ref({ lat: 69, lng: 18 })
-  onMounted(async () => {
-    const customers = await store.getCustomer()
-    position.value = JSON.parse(customers.meta).position
-    console.log(position)
-  })
+  const props = defineProps<{
+    pos: any
+  }>()
+  const myPropValue = ref()
+  const position = ref()
+  watch(
+    () => props.pos,
+    (newValue, oldValue) => {
+      // React to prop changes
+      console.log('Prop changed maps page:', newValue)
+      myPropValue.value = newValue // Update the value in the ref if needed
+    },
+  )
 </script>

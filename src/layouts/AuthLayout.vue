@@ -1,8 +1,9 @@
 <template>
-  <div class="auth-layout grid grid-cols-12 content-center">
+  <div class="test auth-layout grid grid-cols-12 content-center">
+    <img class="test" src="/login.webp" />
     <div class="flex col-span-12 p-4 justify-center">
       <router-link class="py-5 justify-center flex" to="/">
-        <h1>LARSKRAFT</h1>
+        <h1 style="font-size: xx-large">DASHBOARD</h1>
       </router-link>
     </div>
 
@@ -52,7 +53,19 @@
     },
   }
 </script>
-
+<style>
+  .test {
+    position: absolute;
+    z-index: -99999;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
 <style lang="scss">
   .auth-layout {
     min-height: 100vh;

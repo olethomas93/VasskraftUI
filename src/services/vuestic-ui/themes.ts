@@ -12,12 +12,12 @@ export const COLOR_THEMES = [
   {
     name: THEME_NAMES.LIGHT,
     colors: {
-      primary: '#154ec1',
-      secondary: '#767c88',
-      success: '#3d9209',
+      primary: '#1c49b0',
+      secondary: '#FBE0C3',
+      success: '#76E18D',
       info: '#2c82e0',
-      danger: '#e42222',
-      warning: '#ffd43a',
+      danger: '#e34b4a',
+      warning: '#ffc200',
     },
   },
   {
@@ -45,8 +45,8 @@ export const COLOR_THEMES = [
   {
     name: THEME_NAMES.ORIGINAL,
     colors: {
-      primary: '#6EDC7D',
-      secondary: '#A8AEBA',
+      primary: '#FBE0C3',
+      secondary: '7D8E95',
       success: '#76E18D',
       info: '#2c82e0',
       danger: '#e34b4a',

@@ -13,6 +13,9 @@ export const defaultConfig = {
       autoSelected: 'zoom',
     },
   },
+  theme: {
+    mode: 'light',
+  },
   dataLabels: {
     enabled: false,
   },
@@ -24,7 +27,7 @@ export const defaultConfig = {
     align: 'left',
   },
   fill: {
-    type: 'gradient',
+    type: 'solid',
     gradient: {
       shadeIntensity: 1,
       inverseColors: false,

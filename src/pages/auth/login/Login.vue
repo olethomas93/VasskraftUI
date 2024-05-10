@@ -1,29 +1,31 @@
-<template>
-  <form @submit.prevent="onsubmit">
-    <va-input
-      v-model="email"
-      class="mb-4"
-      type="email"
-      :label="t('auth.email')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
-    />
+<template class="background">
+  <div>
+    <form @submit.prevent="onsubmit">
+      <va-input
+        v-model="email"
+        class="mb-4"
+        type="email"
+        :label="t('auth.email')"
+        :error="!!emailErrors.length"
+        :error-messages="emailErrors"
+      />
 
-    <va-input
-      v-model="password"
-      class="mb-4"
-      type="password"
-      :label="t('auth.password')"
-      :error="!!passwordErrors.length"
-      :error-messages="passwordErrors"
-    />
+      <va-input
+        v-model="password"
+        class="mb-4"
+        type="password"
+        :label="t('auth.password')"
+        :error="!!passwordErrors.length"
+        :error-messages="passwordErrors"
+      />
 
-    <div class="auth-layout__options flex items-center justify-between"></div>
+      <div class="auth-layout__options flex items-center justify-between"></div>
 
-    <div class="flex justify-center mt-4">
-      <va-button class="my-0" @click="signinRedirect">{{ t('auth.login') }}</va-button>
-    </div>
-  </form>
+      <div class="flex justify-center mt-4">
+        <va-button class="my-0" @click="signinRedirect">{{ t('auth.login') }}</va-button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -71,3 +73,10 @@
   //   })
   // })
 </script>
+
+<style scoped>
+  .background {
+    position: absolute;
+    background-image: url('/public/login.webp');
+  }
+</style>

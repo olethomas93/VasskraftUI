@@ -1,9 +1,9 @@
 <template>
   <div class="dashboard">
-    <VaTabs v-model="value" grow>
+    <VaTabs v-model="value" center @update:model-value="update">
       <template #tabs>
         <VaTab v-for="tab in tabs" :key="tab">
-          {{ tab.sensorId }}
+          {{ JSON.parse(tab.meta).name }}
         </VaTab>
       </template>
       <div>
@@ -13,7 +13,7 @@
         </div>
         <dashboard-charts :data="data" />
         <dashboard-info-block :data="data"></dashboard-info-block>
-        <dashboard-map></dashboard-map>
+        <dashboard-map :pos="position"></dashboard-map>
       </div>
     </VaTabs>
   </div>
@@ -22,40 +22,38 @@
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue'
   import { useUserStore } from '../../../stores/user'
-  import {
-    getDatabase,
-    onValue,
-    ref as storageRef,
-    get,
-    child,
-    orderByChild,
-    query,
-    limitToLast,
-    startAt,
-    endAt,
-  } from 'firebase/database'
+  import { getDatabase, ref as storageRef, get, child, orderByChild, query, startAt, endAt } from 'firebase/database'
   import DashboardCharts from './DashboardCharts.vue'
   import DashboardMap from './DashboardMap.vue'
   import DashboardInfoBlock from './DashboardInfoBlock.vue'
   import { useRoute } from 'vue-router'
-  import { start } from 'repl'
   const store = useUserStore()
   const data = ref()
   const dbRef = storageRef(getDatabase())
   const items = ref([])
   const value = ref(0)
-  const position = ref()
   const customer = ref()
+  const position = ref({ lat: 60, lng: 18 })
   const tabs = ref()
-  const route = useRoute()
   const getCustomer = async () => {
     const customers = await store.getCustomer()
     customer.value = customers
-    position.value = JSON.parse(customers.meta).position
-    console.log(position.value)
+    //position.value = JSON.parse(customers.meta).position
     items.value = customers.sensors
-
+    position.value = JSON.parse(items.value[value.value].meta).position
     tabs.value = items.value
+  }
+  //   position.value = computed(() => {
+  //     if(items.value[value.value]){
+  //       console.log( JSON.parse(items.value[value.value].meta).position)
+  //       return JSON.parse(items.value[value.value].meta).position
+  //     }else{
+  //       return {lat:60,lng:18}
+  //     }
+
+  // })
+  const update = () => {
+    position.value = JSON.parse(items.value[value.value].meta).position
   }
 
   get(child(dbRef, `data`))
@@ -94,29 +92,29 @@
   }
   const queryDataApi = async (start: Date, end: Date) => {
     const sensor = items.value[value.value]
-    console.log(start, end)
     const res = await store.getSensorHistory({ sensorId: sensor.sensorId, startDate: start, endDate: end })
     if (res) {
+      console.log(res.data)
       data.value = res.data
     }
   }
-  const queryDataFireBase = (start: Date, end: Date) => {
-    const startTimestamp = start.getTime() / 1000
-    const ole = end
-    ole.setHours(23)
-    const endTimestamp = ole.getTime() / 1000
+  // const queryDataFireBase = (start: Date, end: Date) => {
+  //   const startTimestamp = start.getTime() / 1000
+  //   const ole = end
+  //   ole.setHours(23)
+  //   const endTimestamp = ole.getTime() / 1000
 
-    const test = query(
-      child(dbRef, 'data'),
-      orderByChild('time'),
-      startAt(Math.floor(startTimestamp)),
-      endAt(Math.floor(endTimestamp)),
-    )
+  //   const test = query(
+  //     child(dbRef, 'data'),
+  //     orderByChild('time'),
+  //     startAt(Math.floor(startTimestamp)),
+  //     endAt(Math.floor(endTimestamp)),
+  //   )
 
-    get(test).then((snapshot) => {
-      data.value = snapshot.val()
-    })
-  }
+  //   get(test).then((snapshot) => {
+  //     data.value = snapshot.val()
+  //   })
+  // }
 
   onMounted(async () => {
     await getCustomer()

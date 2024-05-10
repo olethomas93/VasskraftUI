@@ -10,6 +10,22 @@ export const useUserStore = defineStore('userStore', {
     loadingSession: false,
   }),
   actions: {
+    async registerUser(email, password, name, role) {
+      this.loadingUser = true
+      const req = { email: email, password: password, name: name, roleId: parseInt(role) }
+      console.log(req)
+      try {
+        const data = await http({ method: 'POST', url: '/v1/auth/register', data: req })
+        console.log(data)
+        //this.userData = { email: user.email, uid: user.uid }
+        router.replace({ name: 'dashboard' })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loadingUser = false
+      }
+    },
+
     async loginUser(email, password) {
       this.loadingUser = true
       console.log(import.meta.env.BASE_URL)

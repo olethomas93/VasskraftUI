@@ -1,5 +1,7 @@
 <template>
   <form @submit.prevent="onsubmit()">
+    <va-input v-model="role" class="mb-4" type="number" :label="t('auth.role')" />
+    <va-input v-model="name" class="mb-4" type="text" :label="t('auth.name')" />
     <va-input
       v-model="email"
       class="mb-4"
@@ -32,9 +34,9 @@
           </span>
         </template>
       </va-checkbox>
-      <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">
+      <!-- <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">
         {{ t('auth.recover_password') }}
-      </router-link>
+      </router-link> -->
     </div>
 
     <div class="flex justify-center mt-4">
@@ -48,25 +50,37 @@
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   const { t } = useI18n()
+  import { useUserStore } from '../../../stores/user'
 
+  const userStore = useUserStore()
+  const role = ref()
+  const customer = ref()
   const email = ref('')
+  const name = ref('')
   const password = ref('')
   const agreedToTerms = ref(false)
   const emailErrors = ref<string[]>([])
+  const nameErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
   const agreedToTermsErrors = ref<string[]>([])
 
   const formReady = computed(() => {
-    return !(emailErrors.value.length || passwordErrors.value.length || agreedToTermsErrors.value.length)
+    return !(
+      emailErrors.value.length ||
+      nameErrors.value.length ||
+      passwordErrors.value.length ||
+      agreedToTermsErrors.value.length
+    )
   })
 
-  function onsubmit() {
+  async function onsubmit() {
     if (!formReady.value) return
 
     emailErrors.value = email.value ? [] : ['Email is required']
+    nameErrors.value = name.value ? [] : ['name is required']
     passwordErrors.value = password.value ? [] : ['Password is required']
     agreedToTermsErrors.value = agreedToTerms.value ? [] : ['You must agree to the terms of use to continue']
-
-    useRouter().push({ name: 'dashboard' })
+    await userStore.registerUser(email.value, password.value, name.value, role.value)
+    // useRouter().push({ name: 'dashboard' })
   }
 </script>

@@ -11,8 +11,8 @@
           <h6>Time Picker</h6>
           <VaDatePicker v-model="range" mode="range" />
         </div>
-        <dashboard-charts :data="data" />
-        <dashboard-info-block :data="data" :place-number="placeNumber"></dashboard-info-block>
+        <dashboard-charts :data="data" :mes="measurements" />
+        <dashboard-info-block :data="data" :place-number="placeNumber" :mes="measurements"></dashboard-info-block>
         <dashboard-map :pos="position"></dashboard-map>
       </div>
     </VaTabs>
@@ -35,13 +35,16 @@
   const customer = ref()
   const position = ref({ lat: 60, lng: 18 })
   const placeNumber = ref()
+  const measurements = ref()
   const tabs = ref()
   const getCustomer = async () => {
     const customers = await store.getCustomer()
     customer.value = customers
     //position.value = JSON.parse(customers.meta).position
     items.value = customers.sensors
-    position.value = JSON.parse(items.value[value.value].meta).position
+    let meta = JSON.parse(items.value[value.value].meta)
+    position.value = meta.position
+    measurements.value = meta.mes
     await getPlace()
     tabs.value = items.value
     console.log('tabs', tabs.value)

@@ -77,6 +77,7 @@
   const props = defineProps<{
     data: any
     placeNumber: any
+    mes: any
   }>()
   const lastValues = ref()
   watch(
@@ -87,12 +88,13 @@
   )
 
   function parseDate(data: any) {
-    console.log('pasrseDate')
     let temp = {}
     for (var i in data) {
-      let value = data[i][data[i].length - 1]._value
-      let time = data[i][data[i].length - 1]._time
-      temp[i] = { value: value, name: i, time: time }
+      if (props.mes.includes(i)) {
+        let value = data[i][data[i].length - 1]._value
+        let time = data[i][data[i].length - 1]._time
+        temp[i] = { value: value, name: i, time: time }
+      }
     }
 
     lastValues.value = temp

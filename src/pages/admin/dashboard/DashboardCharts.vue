@@ -1,6 +1,23 @@
 <template>
   <div class="grid grid-cols-12 gap-6">
-    <va-card class="col-span-12 lg:col-span-6">
+    <template v-for="mes in measurements" :key="mes.name">
+      <va-card class="col-span-12 lg:col-span-6">
+        <va-card-content>
+          <apex-chart
+            type="area"
+            :options="{ ...{ title: { text: mes.name } }, ...vassConfig }"
+            :data="[
+              {
+                name: mes.name,
+                data: mes.data,
+              },
+            ]"
+          ></apex-chart>
+        </va-card-content>
+      </va-card>
+    </template>
+
+    <!-- <va-card class="col-span-12 lg:col-span-6">
       <va-card-content>
         <apex-chart
           type="area"
@@ -28,7 +45,7 @@
           ]"
         ></apex-chart>
       </va-card-content>
-    </va-card>
+    </va-card> -->
   </div>
 </template>
 
@@ -46,6 +63,7 @@
 
   const props = defineProps<{
     data: any
+    mes: any
   }>()
 
   // get(child(dbRef, `data`))
@@ -71,6 +89,7 @@
   const doughnutChartDataGenerated = useChartData(doughnutChartData)
   const vasskraft = ref()
   const voltage = ref()
+  const measurements = ref([])
   const {
     dataComputed: lineChartDataGenerated,
     minIndex,
@@ -80,18 +99,31 @@
   } = usePartOfChartData(dataGenerated)
 
   function parseDate(data: any) {
-    let retData: any[] = []
-    let voltData: any[] = []
-    for (let obj in data.voltage) {
-      voltData.push({ x: data.voltage[obj]._time, y: data.voltage[obj]._value })
+    var temp = []
+    for (var i in data) {
+      let temp2 = []
+      if (props.mes.includes(i)) {
+        for (var value in data[i]) {
+          // console.log(data[mes][value]._value)
+          temp2.push({ x: data[i][value]._time, y: data[i][value]._value })
+        }
+        temp.push({ data: temp2, name: i })
+      }
     }
-    for (let obj in data.level) {
-      retData.push({ x: data.level[obj]._time, y: data.level[obj]._value })
-    }
-    console.log(retData)
-    vasskraft.value = retData
-    voltage.value = voltData
-    return retData
+    measurements.value = temp
+    // console.log('TESTING',temp)
+    // let retData: any[] = []
+    // let voltData: any[] = []
+    // for (let obj in data.voltage) {
+    //   voltData.push({ x: data.voltage[obj]._time, y: data.voltage[obj]._value })
+    // }
+    // for (let obj in data.level) {
+    //   retData.push({ x: data.level[obj]._time, y: data.level[obj]._value })
+    // }
+    // console.log(retData)
+    // vasskraft.value = retData
+    // voltage.value = voltData
+    return temp
   }
   function printChart() {
     const windowObjectReference = window.open('', 'Print', 'height=600,width=800') as Window
@@ -127,10 +159,6 @@
     dataLabels: {
       enabled: false,
     },
-    title: {
-      text: 'Nivå',
-      align: 'left',
-    },
     markers: {
       size: 2,
     },
@@ -149,9 +177,6 @@
         formatter: function (val) {
           return val.toFixed(2)
         },
-      },
-      title: {
-        text: 'mVs',
       },
     },
     xaxis: {

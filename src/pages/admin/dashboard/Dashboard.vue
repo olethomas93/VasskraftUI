@@ -1,9 +1,11 @@
 <template>
   <div class="dashboard">
-    <VaTabs v-model="value" center @update:model-value="update">
+    <VaTabs v-model="value" center hide-slider @update:model-value="update">
       <template #tabs>
         <VaTab v-for="tab in tabs" :key="tab">
-          {{ JSON.parse(tab.meta).name }}
+          <VaButton :disabled="items[value].sensorId !== tab.sensorId" :round="false" preset="primary">{{
+            JSON.parse(tab.meta).name
+          }}</VaButton>
         </VaTab>
       </template>
       <div>
@@ -136,6 +138,7 @@
   // }
 
   onMounted(async () => {
+    value.value = 0
     await getCustomer()
     queryData(range.value.start, range.value.end)
   })

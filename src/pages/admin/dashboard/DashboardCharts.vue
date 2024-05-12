@@ -189,6 +189,7 @@
     },
     tooltip: {
       shared: false,
+      theme: 'dark',
       y: {
         formatter: function (val) {
           return val.toFixed(2)

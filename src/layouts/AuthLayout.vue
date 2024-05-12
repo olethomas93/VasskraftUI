@@ -64,6 +64,7 @@
     align-content: center;
     justify-content: center;
     align-items: center;
+    object-fit: cover;
   }
 </style>
 <style lang="scss">

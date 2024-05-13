@@ -156,6 +156,16 @@
         autoSelected: 'zoom',
       },
     },
+    theme: {
+      mode: 'light',
+      palette: 'palette3',
+      monochrome: {
+        enabled: false,
+        color: '#255aee',
+        shadeTo: 'light',
+        shadeIntensity: 0.65,
+      },
+    },
     dataLabels: {
       enabled: false,
     },
@@ -165,11 +175,15 @@
     fill: {
       type: 'gradient',
       gradient: {
-        shadeIntensity: 1,
-        inverseColors: false,
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: undefined,
+        inverseColors: true,
         opacityFrom: 0.7,
-        opacityTo: 0.9,
-        stops: [0, 90, 100],
+        opacityTo: 1,
+        stops: [0, 50, 100],
+        colorStops: [],
       },
     },
     yaxis: {

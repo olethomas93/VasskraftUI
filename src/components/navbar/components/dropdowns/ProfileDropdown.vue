@@ -9,7 +9,7 @@
       </template>
       <va-dropdown-content class="profile-dropdown__content">
         <va-list-item class="p-2">
-          <router-link to="editProfile" class="profile-dropdown__item">
+          <router-link to="profile" class="profile-dropdown__item">
             {{ t(`user.profile`) }}
           </router-link>
         </va-list-item>

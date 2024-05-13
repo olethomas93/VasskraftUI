@@ -106,6 +106,11 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: '/:catchAll(.*)', // This will match everything and put it under `$route.params.catchAll`
+    name: 'not-found-large-text',
+    component: () => import('../pages/404-pages/VaPageNotFoundLargeText.vue'),
+  },
 ]
 
 const router = createRouter({

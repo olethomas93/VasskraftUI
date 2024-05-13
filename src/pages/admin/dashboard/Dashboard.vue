@@ -8,11 +8,10 @@
           }}</VaButton>
         </VaTab>
       </template>
+      <div class="datePick">
+        <VaDateInput v-model="range" :readonly="false" :format-date="formatDate" :parse-date="parseDate" />
+      </div>
       <div>
-        <div>
-          <h6>Time Picker</h6>
-          <VaDatePicker v-model="range" mode="range" />
-        </div>
         <dashboard-charts :data="data" :mes="measurements" />
         <dashboard-info-block :data="data" :place-number="placeNumber" :mes="measurements"></dashboard-info-block>
         <dashboard-map :pos="position"></dashboard-map>
@@ -39,6 +38,15 @@
   const placeNumber = ref()
   const measurements = ref()
   const tabs = ref()
+  const formatDate = (date) => {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+  }
+
+  const parseDate = (text) => {
+    const [day, month, year] = text.split('/')
+
+    return new Date(year, month - 1, day)
+  }
   const getCustomer = async () => {
     const customers = await store.getCustomer()
     customer.value = customers
@@ -153,5 +161,11 @@
         justify-content: space-between;
       }
     }
+  }
+  .datePick {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    justify-content: space-around;
   }
 </style>

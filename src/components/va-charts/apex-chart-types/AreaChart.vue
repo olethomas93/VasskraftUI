@@ -1,5 +1,5 @@
 <template>
-  <VueApexCharts type="area" :options="chartOptions" :series="props.chartData"></VueApexCharts>
+  <VueApexCharts :options="chartOptions" :series="props.chartData"></VueApexCharts>
 </template>
 
 <script setup lang="ts">

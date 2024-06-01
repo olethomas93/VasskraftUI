@@ -78,6 +78,7 @@
     data: any
     placeNumber: any
     mes: any
+    trendConfig: any
   }>()
   const lastValues = ref()
   watch(
@@ -91,7 +92,11 @@
     let temp = {}
     for (var i in data) {
       if (props.mes.includes(i)) {
-        let value = data[i][data[i].length - 1]._value
+        let offset = 0
+        if (props.trendConfig[i]) {
+          offset = props.trendConfig[i].offset ? props.trendConfig[i].offset : 0
+        }
+        let value = data[i][data[i].length - 1]._value + offset
         let time = data[i][data[i].length - 1]._time
         temp[i] = { value: value, name: i, time: time }
       }

@@ -12,8 +12,13 @@
         <VaDateInput v-model="range" :readonly="false" :format-date="formatDate" :parse-date="parseDate" />
       </div>
       <div>
-        <dashboard-charts :data="data" :mes="measurements" />
-        <dashboard-info-block :data="data" :place-number="placeNumber" :mes="measurements"></dashboard-info-block>
+        <dashboard-charts :data="data" :mes="measurements" :trend-config="trendConfig" />
+        <dashboard-info-block
+          :data="data"
+          :place-number="placeNumber"
+          :mes="measurements"
+          :trend-config="trendConfig"
+        ></dashboard-info-block>
         <dashboard-map :pos="position"></dashboard-map>
       </div>
     </VaTabs>
@@ -37,6 +42,7 @@
   const position = ref({ lat: 60, lng: 18 })
   const placeNumber = ref()
   const measurements = ref()
+  const trendConfig = ref({})
   const tabs = ref()
   const formatDate = (date) => {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
@@ -55,6 +61,10 @@
     let meta = JSON.parse(items.value[value.value].meta)
     position.value = meta.position
     measurements.value = meta.mes
+    if (meta.trendConfig) {
+      trendConfig.value = meta.trendConfig
+    }
+
     await getPlace()
     tabs.value = items.value
     console.log('tabs', tabs.value)
@@ -70,6 +80,8 @@
   // })
   const update = async () => {
     position.value = JSON.parse(items.value[value.value].meta).position
+    trendConfig.value = JSON.parse(items.value[value.value].meta).trendConfig
+    console.log(trendConfig.value)
     await getPlace()
   }
 

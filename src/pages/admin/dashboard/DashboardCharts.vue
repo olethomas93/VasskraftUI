@@ -5,7 +5,7 @@
         <va-card-content>
           <apex-chart
             type="area"
-            :options="{ ...{ title: { text: mes.name } }, ...vassConfig }"
+            :options="{ ...{ title: { text: mes.name } }, ...config, ...trendConfig[mes.name] }"
             :data="[
               {
                 name: mes.name,
@@ -16,36 +16,6 @@
         </va-card-content>
       </va-card>
     </template>
-
-    <!-- <va-card class="col-span-12 lg:col-span-6">
-      <va-card-content>
-        <apex-chart
-          type="area"
-          :options="vassConfig"
-          :data="[
-            {
-              name: 'Nivå',
-              data: vasskraft,
-            },
-          ]"
-        ></apex-chart>
-      </va-card-content>
-    </va-card>
-
-    <va-card class="col-span-12 lg:col-span-6">
-      <va-card-content>
-        <apex-chart
-          type="area"
-          :options="voltConfig"
-          :data="[
-            {
-              name: 'Batterispenning',
-              data: voltage,
-            },
-          ]"
-        ></apex-chart>
-      </va-card-content>
-    </va-card> -->
   </div>
 </template>
 
@@ -64,19 +34,8 @@
   const props = defineProps<{
     data: any
     mes: any
+    trendConfig: any
   }>()
-
-  // get(child(dbRef, `data`))
-  //   .then((snapshot) => {
-  //     if (snapshot.exists()) {
-  //       parseDate(snapshot.val())
-  //     } else {
-  //       console.log('No data available')
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
 
   watch(
     () => props.data,
@@ -86,10 +45,8 @@
   )
 
   const dataGenerated = useChartData(lineChartData, 0.7)
-  const doughnutChartDataGenerated = useChartData(doughnutChartData)
-  const vasskraft = ref()
-  const voltage = ref()
   const measurements = ref([])
+  const config = ref()
   const {
     dataComputed: lineChartDataGenerated,
     minIndex,
@@ -103,9 +60,15 @@
     for (var i in data) {
       let temp2 = []
       if (props.mes.includes(i)) {
+        let offset = 0
+        if (props.trendConfig[i]) {
+          offset = props.trendConfig[i].offset ? props.trendConfig[i].offset : 0
+        }
+
         for (var value in data[i]) {
           // console.log(data[mes][value]._value)
-          temp2.push({ x: data[i][value]._time, y: data[i][value]._value })
+
+          temp2.push({ x: data[i][value]._time, y: (data[i][value]._value + offset).toFixed(2) })
         }
         temp.push({ data: temp2, name: i })
       }
@@ -125,27 +88,8 @@
     // voltage.value = voltData
     return temp
   }
-  function printChart() {
-    const windowObjectReference = window.open('', 'Print', 'height=600,width=800') as Window
 
-    const img = windowObjectReference.document.createElement('img')
-
-    img.src = `${(document.querySelector('.chart--donut canvas') as HTMLCanvasElement | undefined)?.toDataURL(
-      'image/png',
-    )}`
-
-    img.onload = () => {
-      windowObjectReference?.document.body.appendChild(img)
-    }
-
-    windowObjectReference.print()
-
-    windowObjectReference.onafterprint = () => {
-      windowObjectReference?.close()
-    }
-  }
-
-  const vassConfig = {
+  config.value = {
     chart: {
       type: 'area',
       zoom: {
@@ -170,7 +114,7 @@
       enabled: false,
     },
     markers: {
-      size: 2,
+      size: 0,
     },
     fill: {
       type: 'gradient',
@@ -189,9 +133,12 @@
     yaxis: {
       labels: {
         formatter: function (val) {
-          return val.toFixed(2)
+          return val.toFixed(3)
         },
       },
+    },
+    annotations: {
+      yaxis: [],
     },
     xaxis: {
       type: 'datetime',
@@ -229,7 +176,7 @@
           yaxis: {
             labels: {
               formatter: function (val) {
-                return val.toFixed(2)
+                return val.toFixed(3)
               },
             },
             title: {

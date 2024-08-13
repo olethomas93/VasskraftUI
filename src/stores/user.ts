@@ -65,6 +65,7 @@ export const useUserStore = defineStore('userStore', {
       }
     },
     async getSensorHistory(req) {
+      console.log(req)
       try {
         const data = await http.post(`/v1/vasskraft/getData`, req)
         return data.data

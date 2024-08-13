@@ -10,6 +10,8 @@
       </template>
       <div class="datePick">
         <VaDateInput v-model="range" :readonly="false" :format-date="formatDate" :parse-date="parseDate" />
+        <VaSelect v-model="aggregate" :options="options" placeholder="Aggregate function" />
+        <VaSelect v-model="window" :options="optionsWindow" placeholder="Time Window" />
       </div>
       <div>
         <dashboard-charts :data="data" :mes="measurements" :trend-config="trendConfig" />
@@ -44,6 +46,10 @@
   const measurements = ref()
   const trendConfig = ref({})
   const tabs = ref()
+  const options = ref(['median', 'mean', 'last'])
+  const optionsWindow = ref(['1m', '1h', '6h', '12h'])
+  const aggregate = ref('median')
+  const window = ref('6h')
   const formatDate = (date) => {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
   }
@@ -116,7 +122,12 @@
   watch(value, async (newRange, oldRange) => {
     queryDataApi(range.value.start, range.value.end)
   })
-
+  watch(aggregate, async (newRange, oldRange) => {
+    queryDataApi(range.value.start, range.value.end)
+  })
+  watch(window, async (newRange, oldRange) => {
+    queryDataApi(range.value.start, range.value.end)
+  })
   const queryData = (start: Date, end: Date) => {
     if (start && end) {
       queryDataApi(start, end)
@@ -136,7 +147,13 @@
   }
   const queryDataApi = async (start: Date, end: Date) => {
     const sensor = items.value[value.value]
-    const res = await store.getSensorHistory({ sensorId: sensor.sensorId, startDate: start, endDate: end })
+    const res = await store.getSensorHistory({
+      sensorId: sensor.sensorId,
+      startDate: start,
+      endDate: end,
+      aggregate: aggregate.value,
+      period: window.value,
+    })
     if (res) {
       console.log(res.data)
       data.value = res.data
@@ -179,8 +196,9 @@
   }
   .datePick {
     display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-end;
+    flex-direction: column;
     justify-content: space-around;
+    align-items: flex-end;
+    width: fit-content;
   }
 </style>

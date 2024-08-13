@@ -40,7 +40,7 @@
           loading.value = false
         }
       }
-      onMounted(queryDataApi)
+      onMounted(queryDataApi(sensorId.value, field.value))
       return {
         field,
         sensorId,

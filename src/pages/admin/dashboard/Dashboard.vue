@@ -65,8 +65,7 @@
     //position.value = JSON.parse(customers.meta).position
     items.value = customers.sensors
     let meta = JSON.parse(items.value[value.value].meta)
-    console.log('-----------meta-----------')
-    console.log(meta)
+
     position.value = meta.position
     measurements.value = meta.mes
     if (meta.trendConfig) {

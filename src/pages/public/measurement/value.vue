@@ -36,8 +36,8 @@
           if (res) {
             for (var i in res.data) {
               let field = i
-              let value = data[i][0]._value.toFixed(1)
-              let time = new Date(data[i][0]._time).toDateString()
+              let value = res.data[i][0]._value.toFixed(1)
+              let time = new Date(res.data[i][0]._time).toDateString()
 
               data.value = { field, value, time }
             }

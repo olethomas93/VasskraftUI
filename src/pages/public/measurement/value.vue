@@ -27,7 +27,7 @@
 
       const queryDataApi = async (sensorId, field) => {
         try {
-          const res = await store.getSensorHistory({
+          const res = await store.getLastValue({
             sensorId: sensorId,
             field: field,
           })

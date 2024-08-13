@@ -73,6 +73,15 @@ export const useUserStore = defineStore('userStore', {
         console.log(error)
       }
     },
+    async getLastValue(req) {
+      console.log(req)
+      try {
+        const data = await http.post(`/v1/vasskraft/getLastValue`, req)
+        return data.data
+      } catch (error) {
+        console.log(error)
+      }
+    },
     currentUser() {
       return this.userData
     },

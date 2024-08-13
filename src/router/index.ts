@@ -7,6 +7,8 @@ import Page404Layout from '../layouts/Page404Layout.vue'
 import http from '../components/services/httpService'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
+import PublicLayout from '../layouts/PublicLayout.vue'
+import path from 'path'
 
 // const requireAuth = async (to, from, next) => {
 //   const userStore = useUserStore()
@@ -76,6 +78,17 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '',
         redirect: { name: 'login' },
+      },
+    ],
+  },
+  {
+    path: '/public',
+    component: PublicLayout,
+    children: [
+      {
+        name: 'sensor',
+        path: 'sensor/:sensorId/field/:field',
+        component: () => import('../pages/public/measurement/value.vue'),
       },
     ],
   },

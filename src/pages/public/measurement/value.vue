@@ -41,6 +41,7 @@
 
               data.value = { field, value, time }
             }
+            console.log(data.value)
           }
         } catch (err) {
           error.value = 'failed'

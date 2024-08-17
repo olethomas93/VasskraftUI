@@ -67,8 +67,9 @@
 
         for (var value in data[i]) {
           // console.log(data[mes][value]._value)
-
-          temp2.push({ x: data[i][value]._time, y: (data[i][value]._value + offset).toFixed(2) })
+          if (data[i][value]._value > 0) {
+            temp2.push({ x: data[i][value]._time, y: (data[i][value]._value + offset).toFixed(2) })
+          }
         }
         temp.push({ data: temp2, name: i })
       }

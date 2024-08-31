@@ -6,7 +6,7 @@
           <va-card class="col-span-12 sm:col-span-4 mb-4">
             <VaCardTitle>{{ item.name }}</VaCardTitle>
             <va-card-content>
-              <h3 class="va-h2 m-0">{{ item.value.toFixed(2) }}</h3>
+              <h3 class="va-h2 m-0">{{ item.value.toFixed(2) }} {{ item.unit }}</h3>
             </va-card-content>
             <VaCardActions>
               {{ new Date(item.time).toDateString() + '  ' + new Date(item.time).toLocaleTimeString() }}
@@ -93,12 +93,16 @@
     for (var i in data) {
       if (props.mes.includes(i)) {
         let offset = 0
+        let factor = 1
+        let unit = ''
         if (props.trendConfig[i]) {
           offset = props.trendConfig[i].offset ? props.trendConfig[i].offset : 0
+          factor = props.trendConfig[i].factor ? props.trendConfig[i].factor : 1
+          unit = props.trendConfig[i].unit ? props.trendConfig[i].unit : ' '
         }
-        let value = data[i][data[i].length - 1]._value + offset
+        let value = (data[i][data[i].length - 1]._value + offset) * factor
         let time = data[i][data[i].length - 1]._time
-        temp[i] = { value: value, name: i, time: time }
+        temp[i] = { value: value, name: i, time: time, unit }
       }
     }
 

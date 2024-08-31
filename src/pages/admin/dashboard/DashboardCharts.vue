@@ -61,14 +61,18 @@
       let temp2 = []
       if (props.mes.includes(i)) {
         let offset = 0
+        let factor = 1
         if (props.trendConfig[i]) {
           offset = props.trendConfig[i].offset ? props.trendConfig[i].offset : 0
+          factor = props.trendConfig[i].factor ? props.trendConfig[i].factor : 1
         }
 
         for (var value in data[i]) {
           // console.log(data[mes][value]._value)
           if (data[i][value]._value > 0) {
-            temp2.push({ x: data[i][value]._time, y: (data[i][value]._value + offset).toFixed(2) })
+            let datapoint = (data[i][value]._value + offset) * factor
+
+            temp2.push({ x: data[i][value]._time, y: datapoint.toFixed(2) })
           }
         }
         temp.push({ data: temp2, name: i })

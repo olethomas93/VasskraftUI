@@ -5,7 +5,7 @@
     <div v-if="data">
       <!-- Render your data here -->
       <h1>{{ data.field }}</h1>
-      <h2>{{ data.value }}</h2>
+      <h2>{{ data.value }} {{ data.unit }}</h2>
       <h3>{{ data.time }}</h3>
     </div>
   </div>
@@ -30,19 +30,21 @@
       const queryDataApi = async (sensorId, field) => {
         try {
           const res = await store.getLastValue({
-            sensorId: sensorId,
+            sensorId: Number(sensorId),
             field: field,
           })
           if (res) {
-            for (var i in res.data) {
+            let unit = res.data.unit
+            for (var i in res.data.data) {
               let field = i.toUpperCase()
-              let value = res.data[i][0]._value.toFixed(1)
+              let value = res.data.data[i][0]._value * res.data.factor
+              value = value.toFixed(1)
               let time =
-                new Date(res.data[i][0]._time).toDateString() +
+                new Date(res.data.data[i][0]._time).toDateString() +
                 ' ' +
-                new Date(res.data[i][0]._time).toLocaleTimeString()
+                new Date(res.data.data[i][0]._time).toLocaleTimeString()
 
-              data.value = { field, value, time }
+              data.value = { field, value, time, unit }
             }
             console.log(data.value)
           }

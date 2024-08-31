@@ -74,7 +74,6 @@ export const useUserStore = defineStore('userStore', {
       }
     },
     async getLastValue(req) {
-      console.log(req)
       try {
         const data = await http.post(`/v1/vasskraft/getLastValue`, req)
         return data.data

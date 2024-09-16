@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-12 gap-6">
     <template v-for="mes in measurements" :key="mes.name">
-      <va-card class="col-span-12 lg:col-span-6">
+      <va-card class="col-span-12 lg:col-span-6 card">
         <va-card-content>
           <apex-chart
             type="area"
@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
   import { ref, watch } from 'vue'
-  import { getDatabase, ref as storageRef } from 'firebase/database'
   import { useI18n } from 'vue-i18n'
 
   import { doughnutChartData, lineChartData } from '../../../data/charts'
@@ -283,8 +282,11 @@
   }
 </script>
 
-<style scoped>
-  /* .chart {
-    height: 400px;
-  } */
+<style lang="scss">
+  .card {
+    transition: all 0.5s;
+  }
+  .card:hover {
+    --va-card-box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+  }
 </style>

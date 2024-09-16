@@ -44,16 +44,13 @@
   const mapRef = ref()
 
   const initMap = () => {
-    var norgeskart = Leaflet.tileLayer(
-      'https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}',
-      {
-        opacity: 1,
-        maxZoom: 19,
-        detectRetina: true,
+    var norgeskart = Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      opacity: 1,
+      maxZoom: 19,
+      detectRetina: true,
 
-        attribution: '&copy; <a href="https://www.kartverket.no/">Kartverket</a>',
-      },
-    )
+      attribution: '&copy; <a href="https://www.kartverket.no/">Kartverket</a>',
+    })
 
     map.value = Leaflet.map(mapRef.value, {
       layers: [norgeskart],

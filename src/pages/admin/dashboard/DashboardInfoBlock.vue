@@ -1,9 +1,9 @@
 <template>
-  <div class="pt-6 grid grid-cols-12 gap-6">
-    <div class="col-span-12 lg:col-span-6 flex flex-wrap">
+  <div class="pt-6 grid grid-cols-12 gap-12">
+    <div class="col-span-12 lg:col-span-12 flex flex-wrap">
       <div class="w-full pb-6 grid grid-cols-12 gap-6">
         <template v-for="item in lastValues" :key="item.name">
-          <va-card class="col-span-12 sm:col-span-4 mb-4">
+          <va-card class="col-span-12 sm:col-span-4 mb-4 card">
             <VaCardTitle>{{ item.name }}</VaCardTitle>
             <va-card-content>
               <h3 class="va-h2 m-0">{{ item.value.toFixed(2) }} {{ item.unit }}</h3>
@@ -35,35 +35,28 @@
         </va-card> -->
       </div>
 
-      <div class="w-full grid grid-cols-12 gap-6">
-        <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12">
-          <va-card-title> </va-card-title>
+      <div class="w-full grid grid-cols-1 gap-6">
+        <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12 card">
           <va-card-content>
-            <iframe
-              style="min-height: 366px"
-              width="100%"
-              height="100vh"
-              :src="`https://www.yr.no/nb/innhold/${placeNumber}/meteogram.svg?mode=${currentPresetName}`"
-              frameborder="0"
-            ></iframe>
+            <div style="display: flex">
+              <iframe
+                style="min-height: 366px"
+                width="100%"
+                height="100vh"
+                :src="`https://www.yr.no/nb/innhold/${placeNumber}/meteogram.svg?mode=${currentPresetName}`"
+                frameborder="0"
+              ></iframe>
+              <iframe
+                style="min-height: 366px"
+                width="100%"
+                height="100vh"
+                :src="`https://www.yr.no/nb/innhold/${placeNumber}/card.html?mode=${currentPresetName}`"
+                frameborder="0"
+              ></iframe>
+            </div>
           </va-card-content>
         </va-card>
       </div>
-    </div>
-
-    <div class="col-span-12 lg:col-span-6 flex flex-wrap gap-6">
-      <va-card stripe stripe-color="info" class="col-span-12 sm:col-span-12 mb-12">
-        <va-card-title> </va-card-title>
-        <va-card-content>
-          <iframe
-            style="min-height: 366px"
-            width="100%"
-            height="100vh"
-            :src="`https://www.yr.no/nb/innhold/${placeNumber}/card.html?mode=${currentPresetName}`"
-            frameborder="0"
-          ></iframe>
-        </va-card-content>
-      </va-card>
     </div>
   </div>
 </template>
@@ -102,7 +95,7 @@
         }
         let value = (data[i][data[i].length - 1]._value + offset) * factor
         let time = data[i][data[i].length - 1]._time
-        temp[i] = { value: value, name: i, time: time, unit }
+        temp[i] = { value: value, name: i, time: time, unit: unit }
       }
     }
 

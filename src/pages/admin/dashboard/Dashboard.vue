@@ -13,7 +13,7 @@
         <VaSelect v-model="aggregate" :options="options" placeholder="Aggregate function" />
         <VaSelect v-model="window" :options="optionsWindow" placeholder="Time Window" />
       </div>
-      <div>
+      <div class="tab">
         <dashboard-charts :data="data" :mes="measurements" :trend-config="trendConfig" />
         <dashboard-info-block
           :data="data"
@@ -21,6 +21,7 @@
           :mes="measurements"
           :trend-config="trendConfig"
         ></dashboard-info-block>
+        <DashboardWeather :place-number="placeNumber"></DashboardWeather>
         <dashboard-map :pos="position"></dashboard-map>
       </div>
     </VaTabs>
@@ -35,6 +36,7 @@
   import DashboardMap from './DashboardMap.vue'
   import DashboardInfoBlock from './DashboardInfoBlock.vue'
   import { useRoute } from 'vue-router'
+  import DashboardWeather from './DashboardWeather.vue'
   const store = useUserStore()
   const data = ref()
   const dbRef = storageRef(getDatabase())
@@ -144,6 +146,7 @@
       console.log(e)
     }
   }
+
   const queryDataApi = async (start: Date, end: Date) => {
     const sensor = items.value[value.value]
     const res = await store.getSensorHistory({
@@ -185,8 +188,8 @@
 
 <style lang="scss">
   .dashboard {
+    min-width: 80%;
     .va-card {
-      margin-bottom: 0 !important;
       &__title {
         display: flex;
         justify-content: space-between;
@@ -199,5 +202,8 @@
     justify-content: space-around;
     align-items: flex-end;
     width: fit-content;
+  }
+  .tab {
+    min-width: 80vw;
   }
 </style>

@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue'
+  import { onMounted, getCurrentInstance } from 'vue'
   import { useUserStore } from './stores/user'
   import { authStore } from './stores/authStore'
   const userStore = useUserStore()
@@ -48,6 +48,23 @@
   onMounted(() => {
     //store.init()
     subscribeUser()
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'PUSH_MESSAGE') {
+          const toast = getCurrentInstance()?.proxy?.$vaToast
+          if (toast) {
+            toast.init({
+              message: event.data.message,
+              color: 'primary',
+              position: 'top-right',
+              duration: 5000,
+            })
+          } else {
+            alert(event.data.message)
+          }
+        }
+      })
+    }
   })
 </script>
 

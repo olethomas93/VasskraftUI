@@ -14,3 +14,15 @@ self.addEventListener('fetch', (event) => {
     }),
   )
 })
+
+self.addEventListener('push', event => {
+  const data = event.data ? event.data.text() : 'New notification';
+  self.registration.showNotification('Vasskraft', {
+    body: data,
+  });
+  self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
+    clients.forEach(client => {
+      client.postMessage({ type: 'PUSH_MESSAGE', message: data });
+    });
+  });
+});

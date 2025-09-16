@@ -28,6 +28,11 @@ if (process.env.NODE_ENV === 'production') {
     },
     error(error) {
       console.error('Error during service worker registration:', error)
+      if (error && error.message && error.message.includes('MIME type')) {
+        console.warn(
+          'Service worker registration failed due to unsupported MIME type. Ensure /service-worker.js exists and is served as application/javascript.',
+        )
+      }
     },
   })
 }

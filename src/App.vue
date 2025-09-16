@@ -22,24 +22,28 @@
     return outputArray
   }
   const subscribeUser = async () => {
-    const register = await navigator.serviceWorker.register('./service-worker.js', {
-      scope: '/',
-    })
-
-    const subscription = await register.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        'BPsu0nfMzXeFex9k2ihmR_UA_FL_1mceom1Z_hZzFgA92vkMGbpWmhcU3MizJ8e80aO3jpfL66Igp0eVEGqemOg',
-      ),
-    })
-
-    await fetch('http://localhost:3000/subscribe', {
-      method: 'POST',
-      body: JSON.stringify(subscription),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    if (!('serviceWorker' in navigator)) {
+      console.warn('Service workers are not supported in this browser.')
+      return
+    }
+    try {
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          'BPsu0nfMzXeFex9k2ihmR_UA_FL_1mceom1Z_hZzFgA92vkMGbpWmhcU3MizJ8e80aO3jpfL66Igp0eVEGqemOg',
+        ),
+      })
+      await fetch('http://api.northei.no/v1/webpush/subscribe', {
+        method: 'POST',
+        body: JSON.stringify(subscription),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error('Push subscription failed:', error)
+    }
   }
   onMounted(() => {
     //store.init()

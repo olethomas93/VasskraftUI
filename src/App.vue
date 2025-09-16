@@ -6,10 +6,12 @@
   import { onMounted, getCurrentInstance } from 'vue'
   import { useUserStore } from './stores/user'
   import { authStore } from './stores/authStore'
+  import { useColors, useToast } from 'vuestic-ui'
 
   const userStore = useUserStore()
   const store = authStore()
-
+  const { colors } = useColors()
+  const { init: initToast } = useToast()
   // ---- utils ----
   const urlBase64ToUint8Array = (base64String: string) => {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -108,6 +110,8 @@
           duration: 5000,
         })
       } else {
+        const color = colors.primary
+        initToast({ message: msg.body, color })
         alert(msg)
       }
     })

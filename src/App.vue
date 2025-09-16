@@ -111,8 +111,8 @@
         })
       } else {
         const color = colors.primary
-        initToast({ message: msg.body, color })
-        alert(msg)
+        initToast({ message: msg, color })
+        //alert(msg)
       }
     })
   }

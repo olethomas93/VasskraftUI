@@ -34,7 +34,7 @@
           'BPsu0nfMzXeFex9k2ihmR_UA_FL_1mceom1Z_hZzFgA92vkMGbpWmhcU3MizJ8e80aO3jpfL66Igp0eVEGqemOg',
         ),
       })
-      await fetch('https://api.northei.no/v1/webpush/subscribe', {
+      await fetch('https://wwww.api.northei.no/v1/webpush/subscribe', {
         method: 'POST',
         body: JSON.stringify(subscription),
         headers: {
